@@ -1,0 +1,12 @@
+el programa litodensidad.py es un programa para graficar M vs N en 
+un plano de 2 dimensiones siendo N el eje x y siendo M el eje y.
+
+el programa litodensidad_3D.py pretende graficar 3 ejes M, N y L.
+siendo el el eje Z
+
+para correr el programa es necesario instalar python junto con las 
+librerias de: numpy, matplotlib y pandas.
+estas librerias se instalan de manera automatica si se instala python 
+desde la pagina de anaconda: https://www.anaconda.com/distribution/#download-section
+
+hecho por: RESENDIZ AVILES JOSE ANGEL.
