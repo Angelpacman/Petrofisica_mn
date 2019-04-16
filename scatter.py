@@ -6,27 +6,19 @@ import csv
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+import matplotlib.mlab as mlab
 
 
-#datos = pd.read_csv('/home/angelr/Documentos/documentos/evaluacion_petrofisica/litodensidad/eval_petro.csv')
+
+#lectura de datos y calculo de las variables que faltan
 datos = pd.read_csv('eval_petro.csv')
-
-#datos.head()
-#datos['PROF'].head()
 datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
-#datos['DT']
-#datos
-
-
 datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
-#datos.head()
-
 datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
-#datos['L']
 
-
+#pares de puntos para gradicar el triangulo y las lineas de porosidad primaria
 P_inicial=[0.5051,0.5241,0.5848,0.6273,0.6273,0.5051]
-P_final  =[0.702,0.7781,0.8269,0.8091,0.8091,0.702]
+P_final  =[0.7020,0.7781,0.8269,0.8091,0.8091,0.7020]
 P_M1=[0.5241,0.6273]
 P_M2=[0.7781,0.8091]
 v_x1=[0.5241,0.5241]
@@ -37,22 +29,8 @@ v_x3=[0.6273,0.6273]
 v_y3=[0.8091,0.95]
 
 
-"""
-plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
-plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
-#plt.scatter(datos['N'],datos['M'])
-
-#plt.xlim([0.5,0.65])
-#plt.ylim([0.7,0.95])
-plt.xlim([0.3,1])
-plt.ylim([0.4,1.2])
-plt.grid()
-plt.xlabel('N')
-plt.ylabel('M')
-plt.title('Gráfica de M vs N')
-plt.show()
-"""
-
+"""Aqui hemos de convertir las colimnas del dataframe que salio de pandas para transformarlas en
+variables que se pueden manipular como arreglos"""
 PROF = np.array(datos['PROF'])
 GR = np.array(datos['GR'])
 LLS = np.array(datos['LLS'])
@@ -63,12 +41,12 @@ M = np.array(datos['M'])
 N = np.array(datos['N'])
 L = np.array(datos['L'])
 
-
-fig = plt.figure(figsize=(10, 10))
+#ubucacion de la figura y las subplots
+fig = plt.figure(figsize=(9, 9))
 grid = plt.GridSpec(4, 4, hspace=0.2, wspace=0.2)
-main_ax = fig.add_subplot(grid[:-1, 1:])
-y_hist = fig.add_subplot(grid[:-1, 0], xticklabels=[], sharey=main_ax)
-x_hist = fig.add_subplot(grid[-1, 1:], yticklabels=[], sharex=main_ax)
+main_ax = fig.add_subplot(grid[1:,:-1])
+y_hist = fig.add_subplot(grid[1:, -1], xticklabels=[], sharey=main_ax)
+x_hist = fig.add_subplot(grid[0, :-1], yticklabels=[], sharex=main_ax)
 
 # scatter points on the main axes
 main_ax.plot(N, M, marker='o', linestyle='', markersize=7, alpha=0.2, color ='orange')
@@ -76,43 +54,34 @@ main_ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 main_ax.grid()
 
 
-"""plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
-plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
-#plt.scatter(datos['N'],datos['M'])
-
-#plt.xlim([0.5,0.65])
-#plt.ylim([0.7,0.95])
-plt.xlim([0.3,1])
-plt.ylim([0.4,1.2])
-plt.grid()
-plt.xlabel('N')
-plt.ylabel('M')
-plt.title('Gráfica de M vs N')"""
 
 # histogram on the attached axes
-x_hist.hist(N, 80, histtype='stepfilled',
-            orientation='vertical', color='orange')
+x_hist.hist(N, 150, histtype='stepfilled',orientation='vertical', color='orange')
 x_hist.grid()
-x_hist.invert_yaxis()
+#x_hist.invert_yaxis()
 
-
-y_hist.hist(M, 80, histtype='stepfilled',
-            orientation='horizontal', color='orange')
-y_hist.invert_xaxis()
+y_hist.hist(M, 150, histtype='stepfilled',orientation='horizontal', color='orange')
+#y_hist.invert_xaxis()
 y_hist.grid()
 
-
-#plt.xlabel('N')
-#plt.ylabel('M')
 
 
 # make some labels invisible
 x_hist.xaxis.set_tick_params(labelbottom=False)
 y_hist.yaxis.set_tick_params(labelleft=False)
 
+#niveles de grid en las subplot pequeñas (frecuancia de datos)
+x_hist.set_yticks([0, 5, 10, 15])
+y_hist.set_xticks([0, 5, 10, 15])
 
-x_hist.set_yticks([0, 15, 30])
-y_hist.set_xticks([0, 15, 30])
-#datos
+x_hist.set_ylabel('frecuencia de datos N')
+main_ax.set_xlabel('N')
+main_ax.set_ylabel('M')
+y_hist.set_xlabel('frecuencia de datos M')
+
+x_hist.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+y_hist.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
+
+
 
 plt.show()
