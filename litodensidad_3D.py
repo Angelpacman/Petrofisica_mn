@@ -1,9 +1,12 @@
 import numpy as np
 import pandas as pd
+import matplotlib as mpl
+
 import matplotlib.pyplot as plt
 
 
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import LinearSegmentedColormap
 
 
 
@@ -58,30 +61,29 @@ plt.show()
 
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(121, projection='3d')
 X = datos['N']
 Y = datos['M']
 Z = datos['PROF']  #*-1
 
-ax.scatter(X,Y,Z, c='orange',marker = 'o')
+ax.plot3D(X,Y,Z,color ='orange', marker = 'o')
 ax.invert_zaxis()
 #Axes3D.plot(xs = datos['N'], ys = datos['M'], zs = datos['L'] , zdir = 'z')a
 ax.set_xlabel('N')
 ax.set_ylabel('M')
 ax.set_zlabel('Z')
-
-plt.show()
-
+#plt.show()
 
 
 
-fig2 = plt.figure()
-ay = fig.add_subplot(111, projection='3d')
+
+#fig2 = plt.figure()
+ay = fig.add_subplot(122, projection='3d')
 X = datos['N']
 Y = datos['M']
 Z = datos['PROF']     #*-1
 ay.invert_zaxis()
-ay.plot(X,Y,Z, c='orange',marker = 'o')
+ay.plot(X,Y,Z, c='blue',marker = 'o', linestyle='')
 #Axes3D.plot(xs = datos['N'], ys = datos['M'], zs = datos['L'] , zdir = 'z')a
 ay.set_xlabel('N')
 ay.set_ylabel('M')
