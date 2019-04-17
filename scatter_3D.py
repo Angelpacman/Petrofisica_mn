@@ -4,11 +4,8 @@ import pandas as pd
 from mpl_toolkits.mplot3d import axes3d
 
 datos = pd.read_csv('eval_petro.csv')
-
 datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
-
 datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
-
 datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
 
 P_inicial=[0.5051,0.5241,0.5848,0.6273,0.6273,0.5051]
@@ -24,7 +21,7 @@ v_y3=[0.8091,0.95]
 
 
 
-PROF = np.array(datos['PROF'])
+PROF = np.array(datos['PROF']) #*-1 #esto para poner profundidad negativa, ojo: invertir zaxis()
 GR = np.array(datos['GR'])
 LLS = np.array(datos['LLS'])
 FR = np.array(datos['FR'])
@@ -35,19 +32,19 @@ N = np.array(datos['N'])
 L = np.array(datos['L'])
 
 
-data = (N, M, PROF)
-colors = ("red", "green", "blue")
-groups = ("coffee", "tea", "water")
 
-# Create plot
+# Create plot 3D Plot
 fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-ax = fig.gca(projection='3d')
+#Aqui precisamos de un arreglo que tenga el mismo tamaño de M y N (que en nuestro caso es 400)
+#col = np.arange(np.array(len(PROF)))
+#col = np.linspace(PROF[0],PROF[399],400)
+col = np.linspace(PROF[-1],PROF[0],400)
 
-for data, color, group in zip(data, colors, groups):
-    N, M, PROF = data
-    ax.scatter(N, M, PROF, alpha=0.8, c=color, edgecolors='none', s=30, label=group)
-
-plt.title('Matplot 3d scatter plot')
-plt.legend(loc=2)
+ax3D = fig.add_subplot(111, projection='3d')
+p3d=ax3D.scatter(N, M, PROF, s=100, c=col, marker='.')
+ax3D.invert_zaxis()
+ax3D.set_xlabel('N')
+ax3D.set_ylabel('M')
+ax3D.set_zlabel('z')
+#plt.colorbar(p3d)
 plt.show()
