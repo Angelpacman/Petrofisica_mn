@@ -29,7 +29,7 @@ v_y3=[0.8091,1.2]
 
 #figura
 plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
-plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
+plt.plot(datos['N'],datos['M'],marker='o', markersize=1, linestyle='', color='r', label = "M vs N")
 #plt.scatter(datos['N'],datos['M'])
 #plt.xlim([0.5,0.65])
 #plt.ylim([0.7,0.95])
@@ -77,6 +77,7 @@ LLS  = np.array(datos['LLS'])
 FR   = np.array(datos['FR'])
 DT   = np.array(datos['DT'])
 NPHI = np.array(datos['NPHI'])
+RHOB = np.array(datos['RHOB'])
 M    = np.array(datos['M'])
 N    = np.array(datos['N'])
 L    = np.array(datos['L'])
@@ -121,3 +122,63 @@ ay3 = plt.subplot(133, sharex=ay1, sharey=ay1)
 plt.plot(FR, PROF)
 #plt.xlim(0.01, 5.0)
 plt.show()
+
+
+"""
+ahora toca armar el sistema de ecuaciones y resolverlo para todas las filas
+"""
+# define matrix A using Numpy arrays
+A = np.matrix([ [189, 43.5, 55.5,   120],
+                [1.0, 0.02, -0.035, 0.33],
+                [1.0, 2.87, 2.65,   2.35],
+                [1.0, 1.0,  1.0,    1.0]    ])
+A.shape
+
+#define matrix B
+b = np.matrix([ [DT],
+                [NPHI],
+                [RHOB],
+                [1] ])
+# b = np.array([73.9477, 0.1275, 2.6503, 1])
+B = np.array([59.8739, 0.0606, 2.5407, 1])
+
+x = np.around(np.linalg.solve(A, B), decimals = 7)
+x
+datos.head()
+
+A_inverse = np.linalg.inv(A)
+
+X = A_inverse * b
+
+
+FIP  =  X[0]
+VDOL =  X[1]
+VSIL =  X[2]
+VARC =  X[3]
+
+
+FIP = np.array(FIP.T)[0]
+type(FIP)
+FIP.shape
+FIP.size
+
+VDOL = np.array(VDOL.T)[0]
+type(VDOL)
+VDOL.shape
+VDOL.size
+
+VSIL = np.array(VSIL.T)[0]
+type(VSIL)
+VSIL.shape
+VSIL.size
+
+VARC = np.array(VARC.T)[0]
+type(VARC)
+VARC.shape
+VARC.size
+
+datos['FIP']  = np.around(FIP,  decimals = 4)
+datos['VDOL'] = np.around(VDOL, decimals = 4)
+datos['VSIL'] = np.around(VSIL, decimals = 4)
+datos['VARC'] = np.around(VARC, decimals = 4)
+datos.head()
