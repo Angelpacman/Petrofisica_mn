@@ -179,10 +179,10 @@ VARC.shape
 VARC = np.array(VARC.T)[0]
 VARC.shape
 
-datos['FIP']  = np.around(FIP,  decimals = 4)
 datos['VDOL'] = np.around(VDOL, decimals = 4)
 datos['VSIL'] = np.around(VSIL, decimals = 4)
 datos['VARC'] = np.around(VARC, decimals = 4)
+datos['FIP']  = np.around(FIP,  decimals = 4)
 datos.head()
 
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
