@@ -7,9 +7,9 @@ from mpl_toolkits.mplot3d import Axes3D
 
 #datos
 datos = pd.read_csv('eval_petro.csv')
-datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),  decimals =4)
-datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)), decimals = 4)
-datos['L']  = np.around(np.array( 0.01 * (189 - datos['DT']) / (1-datos['NPHI']) ) , decimals =4)
+datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),   decimals =4)
+datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)),   decimals = 4)
+datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) ), decimals =4)
 
 #Delimitacion de figura
 P_inicial=[0.5051,0.5241,0.5848,0.6273,0.6273,0.5051]
@@ -95,7 +95,7 @@ np.mean(GR)
 #resistivos 0.2 2000
 #dt 45 189
 
-#prube de ploteo con registros xdxdxdddd
+#prueba de ploteo con registros xdxdxdddd
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -142,7 +142,7 @@ b = np.matrix([ [DT],
 # b = np.array([73.9477, 0.1275, 2.6503, 1])
 B = np.array([59.8739, 0.0606, 2.5407, 1])
 
-x = np.around(np.linalg.solve(A, B), decimals = 7)
+x = np.around(np.linalg.solve(A, B), decimals = 4)
 x
 datos.head()
 
@@ -157,28 +157,32 @@ VSIL =  X[2]
 VARC =  X[3]
 
 
+#La idea de poner 2 shape es para que el arreglo quede de tamaño (400,1)
+#hasta el momento no he encontrado como optimizar este detalle
 FIP = np.array(FIP.T)[0]
-type(FIP)
 FIP.shape
-FIP.size
+FIP = np.array(FIP.T)[0]
+FIP.shape
 
 VDOL = np.array(VDOL.T)[0]
-type(VDOL)
 VDOL.shape
-VDOL.size
+VDOL = np.array(VDOL.T)[0]
+VDOL.shape
 
 VSIL = np.array(VSIL.T)[0]
-type(VSIL)
 VSIL.shape
-VSIL.size
+VSIL = np.array(VSIL.T)[0]
+VSIL.shape
 
 VARC = np.array(VARC.T)[0]
-type(VARC)
 VARC.shape
-VARC.size
+VARC = np.array(VARC.T)[0]
+VARC.shape
 
 datos['FIP']  = np.around(FIP,  decimals = 4)
 datos['VDOL'] = np.around(VDOL, decimals = 4)
 datos['VSIL'] = np.around(VSIL, decimals = 4)
 datos['VARC'] = np.around(VARC, decimals = 4)
 datos.head()
+
+datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
