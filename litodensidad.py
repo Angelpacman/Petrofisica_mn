@@ -7,9 +7,9 @@ from mpl_toolkits.mplot3d import Axes3D
 
 #datos
 datos = pd.read_csv('eval_petro.csv')
-datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
-datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
-datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
+datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),  decimals =4)
+datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)), decimals = 4)
+datos['L']  = np.around(np.array( 0.01 * (189 - datos['DT']) / (1-datos['NPHI']) ) , decimals =4)
 
 #Delimitacion de figura
 P_inicial=[0.5051,0.5241,0.5848,0.6273,0.6273,0.5051]
@@ -22,6 +22,9 @@ v_x2=[0.5848,0.5848]
 v_y2=[0.8269,1.2]
 v_x3=[0.6273,0.6273]
 v_y3=[0.8091,1.2]
+#print(P_inicial)
+#plt.plot(P_inicial,P_final)
+#plt.plot(P_M1,P_M2)
 
 
 #figura
@@ -46,7 +49,7 @@ from shapely.geometry.polygon import Polygon
 polygon = Polygon([(0.5241, 0.7781), (0.5848, 0.8269), (0.6273, 0.8091), (0.5241, 0.7781)])
 
 
-"""definicion de los datos, conversio de datos de serie a numericos tipo array"""
+"""definicion de los datos, conversion de datos de serie a numericos tipo array"""
 M = np.array(datos['M'])
 N = np.array(datos['N'])
 
