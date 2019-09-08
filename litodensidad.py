@@ -84,44 +84,6 @@ L    = np.array(datos['L'])
 Porosidad = np.array(datos['Porosidad'])
 #print(datos)
 datos.head()
-print(datos)
-plt.plot(GR,PROF,FR,PROF)
-plt.grid()
-plt.show()
-np.mean(GR)
-
-
-#gr 0 150
-#resistivos 0.2 2000
-#dt 45 189
-
-#prueba de ploteo con registros xdxdxdddd
-import matplotlib.pyplot as plt
-import numpy as np
-
-t = np.arange(0.01, 5.0, 0.01)
-s1 = np.sin(2 * np.pi * t)
-s2 = np.exp(-t)
-s3 = np.sin(4 * np.pi * t)
-
-ay1 = plt.subplot(131)
-plt.xlim([0,70])
-plt.plot(GR, PROF)
-#plt.setp(ax1.get_xticklabels(), fontsize=6)
-
-# share x only
-ay2 = plt.subplot(132, sharex=ay1)
-plt.xlim([0,150])
-plt.plot(DT, PROF)
-
-# make these tick labels invisible
-#plt.setp(ax2.get_xticklabels(), visible=False)
-
-# share x and y
-ay3 = plt.subplot(133, sharex=ay1, sharey=ay1)
-plt.plot(FR, PROF)
-#plt.xlim(0.01, 5.0)
-plt.show()
 
 
 """
@@ -144,7 +106,7 @@ B = np.array([59.8739, 0.0606, 2.5407, 1])
 
 x = np.around(np.linalg.solve(A, B), decimals = 4)
 x
-datos.head()
+#datos.head()
 
 A_inverse = np.linalg.inv(A)
 
@@ -179,10 +141,13 @@ VARC.shape
 VARC = np.array(VARC.T)[0]
 VARC.shape
 
-datos['VDOL'] = np.around(VDOL, decimals = 4)
-datos['VSIL'] = np.around(VSIL, decimals = 4)
-datos['VARC'] = np.around(VARC, decimals = 4)
-datos['FIP']  = np.around(FIP,  decimals = 4)
+VCAL = np.array(VARC*0.0000)
+
+datos['VDOL'] = np.around(VDOL,decimals = 4)
+datos['VCAL'] = np.around(VCAL,decimals = 4)
+datos['VSIL'] = np.around(VSIL,decimals = 4)
+datos['VARC'] = np.around(VARC,decimals = 4)
+datos['FIP']  = np.around(FIP, decimals = 4)
 datos.head()
 
-datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
