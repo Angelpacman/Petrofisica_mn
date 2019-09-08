@@ -31,8 +31,12 @@ v_y3=[0.8091,0.95]
 #convertir la columnas del dataframe en arreglos para poder manipular los datos
 N = np.array(datos['N'])
 M = np.array(datos['M'])
+L = np.array(datos['L'])
 PROF= np.array(datos['PROF'])  #*-1
-col = np.linspace(PROF[-1],PROF[0],400)
+#z = -1*PROF
+col = np.linspace(-1*PROF[0],-1*PROF[-1],400)
+#colP = np.linspace(PROF[-1],PROF[0],400)
+#colL = np.linspace(L[-1],L[0],400)
 
 #aqui va figura en 2D
 fig = plt.figure()
@@ -41,17 +45,18 @@ ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 ax.grid()
 ax.set_xlabel('N')
 ax.set_ylabel('M')
-ax.scatter(N, M, s=10, c=col, marker='o')
-
+ax.scatter(N, M, s=10, c = col, marker='o')
+p2d = ax.scatter(N, M, s=10, c = col, marker='o')
+plt.colorbar(p2d)
 
 
 #aqui va la figura pero en proyeccion 3D de M vs N
 fig = plt.figure()
 ay = fig.add_subplot(111, projection='3d')
-p3d=ay.scatter(N, M, PROF, s=40, c=col, marker='.')
-ay.invert_zaxis()
+p3d = ay.scatter(N, M, -1*PROF, s=40, c=col, marker='.')
+#ay.invert_zaxis()
 ay.set_xlabel('N')
 ay.set_ylabel('M')
-ay.set_zlabel('z')
+ay.set_zlabel('Profundidad')
 #plt.colorbar(p3d)
 plt.show()
