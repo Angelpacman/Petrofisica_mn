@@ -8,17 +8,6 @@ datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
 datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
 datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
 
-P_inicial=[0.5051,0.5241,0.5848,0.6273,0.6273,0.5051]
-P_final  =[0.702,0.7781,0.8269,0.8091,0.8091,0.702]
-P_M1=[0.5241,0.6273]
-P_M2=[0.7781,0.8091]
-v_x1=[0.5241,0.5241]
-v_y1=[0.7781,0.95]
-v_x2=[0.5848,0.5848]
-v_y2=[0.8269,0.95]
-v_x3=[0.6273,0.6273]
-v_y3=[0.8091,0.95]
-
 
 
 PROF = np.array(datos['PROF']) #*-1 #esto para poner profundidad negativa, ojo: invertir zaxis()

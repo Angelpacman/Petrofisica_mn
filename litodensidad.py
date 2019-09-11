@@ -11,25 +11,47 @@ datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),   
 datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)),   decimals = 4)
 datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) ), decimals =4)
 
-#Delimitacion de figura
-P_inicial=[0.5051,0.5241,0.5848,0.6273,0.6273,0.5051]
-P_final  =[0.702,0.7781,0.8269,0.8091,0.8091,0.702]
-P_M1=[0.5241,0.6273]
-P_M2=[0.7781,0.8091]
-v_x1=[0.5241,0.5241]
-v_y1=[0.7781,1.2]
-v_x2=[0.5848,0.5848]
-v_y2=[0.8269,1.2]
-v_x3=[0.6273,0.6273]
-v_y3=[0.8091,1.2]
-#print(P_inicial)
-#plt.plot(P_inicial,P_final)
-#plt.plot(P_M1,P_M2)
+#Delimitacion de figura con valores mas precisos de minerales
 
+DOLOMIA = np.array([43.5, 2.87, 0.02])
+CALIZA  = np.array([47.6, 2.71, 0.00])
+SILICE  = np.array([55.5, 2.65, -0.035])
+ARCILLA = np.array([120,  2.35, 0.33])
+
+def param_lito(mineral):
+    M = 0.01 * (189-mineral[0])/(mineral[1] - 1)
+    N = (1 - mineral[2]) / (mineral[1] - 1)
+    L = 0.01 * (189 - mineral[0])/(1 - mineral[2])
+    return    np.array([M,N,L])
+
+param_lito(DOLOMIA)
+param_lito(CALIZA)
+param_lito(SILICE)
+param_lito(ARCILLA)
+
+ax = param_lito(DOLOMIA)[1]
+ay = param_lito(DOLOMIA)[0]
+bx = param_lito(CALIZA)[1]
+by = param_lito(CALIZA)[0]
+cx = param_lito(SILICE)[1]
+cy = param_lito(SILICE)[0]
+dx = param_lito(ARCILLA)[1]
+dy = param_lito(ARCILLA)[0]
+
+P_inicial=[ax,bx,cx,dx,ax]
+P_final  =[ay,by,cy,dy,ay]
+P_M1=[ax,cx]
+P_M2=[ay,cy]
+v_x1=[ax,ax]
+v_y1=[ay,1.2]
+v_x2=[bx,bx]
+v_y2=[by,1.2]
+v_x3=[cx,cx]
+v_y3=[cy,1.2]
 
 #figura
 plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
-plt.plot(datos['N'],datos['M'],marker='o', markersize=1, linestyle='', color='r', label = "M vs N")
+plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
 #plt.scatter(datos['N'],datos['M'])
 #plt.xlim([0.5,0.65])
 #plt.ylim([0.7,0.95])
@@ -38,7 +60,7 @@ plt.ylim([0.4,1.2])
 plt.grid()
 plt.xlabel('N')
 plt.ylabel('M')
-plt.title('Gráfica de M vs N')
+plt.title('M vs N')
 plt.show()
 
 
