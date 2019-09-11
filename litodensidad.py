@@ -67,8 +67,12 @@ plt.show()
 #librerias para trabajar con el poligono
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+
 #vertices del poligono
-polygon = Polygon([(0.5241, 0.7781), (0.5848, 0.8269), (0.6273, 0.8091), (0.5241, 0.7781)])
+DOL_CAL_SIL_FIP = Polygon([(ax, ay), (bx , by), (cx , cy), (ax, ay)])
+DOL_SIL_ARC_FIP = Polygon([(ax, ay), (cx , cy), (dx , dy), (ax, ay)])
+DOL_CAL_FIP_FIS = Polygon([(ax, ay), (bx , by), (bx , 1.2), (ax, 1.2), (ax ,ay)])
+CAL_SIL_FIP_FIS = Polygon([(bx, by), (cx , cy), (cx , 1.2), (bx ,1.2), (bx, by)])
 
 
 """definicion de los datos, conversion de datos de serie a numericos tipo array"""
@@ -78,14 +82,33 @@ N = np.array(datos['N'])
 #algoritmo para decidir si un punto esta dentro del poligono
 i = 0
 puntos = []
+
 for numero in M:
     point = Point(N[i],M[i])
-    buleano = polygon.contains(point)
+    buleano = DOL_CAL_SIL_FIP.contains(point)
+
     if buleano == True:
-        puntos.append('primaria')
+        puntos.append('DOL_CAL_SIL_FIP')
+
     else:
-        puntos.append('secundaria')
+        buleano = DOL_SIL_ARC_FIP.contains(point)
+        if buleano == True:
+            puntos.append('DOL_SIL_ARC_FIP')
+
+        else:
+            buleano = DOL_CAL_FIP_FIS.contains(point)
+            if buleano == True:
+                puntos.append('DOL_CAL_FIP_FIS')
+
+            else:
+                buleano = CAL_SIL_FIP_FIS.contains(point)
+                if buleano == True:
+                    puntos.append('CAL_SIL_FIP_FIS')
+
+                else:
+                    puntos.append('null')
     i += 1
+
 
 #no recuerdo por que meti denuevo los datos ¿¿?¿?¿'¿¿'??? xdxdxd
 datos['Porosidad'] = puntos
