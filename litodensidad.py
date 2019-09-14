@@ -140,12 +140,12 @@ r4 = str("CAL_SIL_FIP_FIS")
 
 
 
-FIP = np.array([])
+FIP  = np.array([])
 VDOL = np.array([])
 VCAL = np.array([])
 VSIL = np.array([])
 VARC = np.array([])
-FIS = np.array([])
+FIS  = np.array([])
 
 
 for area in Porosidad:
@@ -251,11 +251,42 @@ datos['VDOL'] = np.around(VDOL,decimals = 4)
 datos['VCAL'] = np.around(VCAL,decimals = 4)
 datos['VSIL'] = np.around(VSIL,decimals = 4)
 datos['VARC'] = np.around(VARC,decimals = 4)
-datos['FIS']  = np.around(FIS, decimals = 4)
 datos['FIP']  = np.around(FIP, decimals = 4)
+datos['FIS']  = np.around(FIS, decimals = 4)
+
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+
+FIT = FIP + FIS
+datos['FIT']  = np.around(FIT, decimals = 4)
+
+Suma = VDOL + VCAL + VSIL + VARC + FIS + FIP
+datos['Suma']  = np.around(Suma, decimals = 4)
+
+
+SumaABS = abs(VDOL) + abs(VCAL) + abs(VSIL) + abs(VARC) + abs(FIS) + abs(FIP)
+VDOLR = abs(VDOL)/SumaABS
+VCALR = abs(VCAL)/SumaABS
+VSILR = abs(VSIL)/SumaABS
+VARCR = abs(VARC)/SumaABS
+FIPR  = abs(FIP)/SumaABS
+FISR  = abs(FIS)/SumaABS
+FITR  = abs(FIT)/SumaABS
+
+
+datos['VDOLR'] = np.around(VDOLR,decimals = 4)
+datos['VCALR'] = np.around(VCALR,decimals = 4)
+datos['VSILR'] = np.around(VSILR,decimals = 4)
+datos['VARCR'] = np.around(VARCR,decimals = 4)
+datos['FIPR']  = np.around(FIPR, decimals = 4)
+datos['FISR']  = np.around(FISR, decimals = 4)
+datos['FITR']  = np.around(FITR, decimals = 4)
+
+
+SumaR = VDOLR + VCALR + VSILR + VARCR + FISR + FIPR
+datos['SumaR']  = np.around(SumaR, decimals = 4)
 
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
 
-VDOL[56]+ VCAL[56] +VSIL[56]+VARC[56]+FIS[56]+FIP[56]
-#plt.plot(VSIL,-1*PROF)
+
 print(datos)
