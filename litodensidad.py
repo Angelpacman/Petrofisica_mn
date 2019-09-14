@@ -13,15 +13,15 @@ datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) )
 
 #Delimitacion de figura con valores mas precisos de minerales
 
-DOLOMIA = np.array([43.5, 2.87, 0.02])
-CALIZA  = np.array([47.6, 2.71, 0.00])
-SILICE  = np.array([55.5, 2.65, -0.035])
-ARCILLA = np.array([120,  2.35, 0.33])
+DOLOMIA = np.array([43.5, 0.02, 2.87])
+CALIZA  = np.array([47.6, 0.00, 2.71])
+SILICE  = np.array([55.5,-0.035, 2.65])
+ARCILLA = np.array([120,  0.33,  2.35])
 
 def param_lito(mineral):
-    M = 0.01 * (189-mineral[0])/(mineral[1] - 1)
-    N = (1 - mineral[2]) / (mineral[1] - 1)
-    L = 0.01 * (189 - mineral[0])/(1 - mineral[2])
+    M = 0.01 * (189-mineral[0])/(mineral[2] - 1)
+    N = (1 - mineral[1]) / (mineral[2] - 1)
+    L = 0.01 * (189 - mineral[0])/(1 - mineral[1])
     return    np.array([M,N,L])
 
 param_lito(DOLOMIA)
@@ -67,8 +67,12 @@ plt.show()
 #librerias para trabajar con el poligono
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+
 #vertices del poligono
-polygon = Polygon([(0.5241, 0.7781), (0.5848, 0.8269), (0.6273, 0.8091), (0.5241, 0.7781)])
+r1 = DOL_CAL_SIL_FIP = Polygon([(ax, ay), (bx , by), (cx , cy), (ax, ay)])
+r2 = DOL_SIL_ARC_FIP = Polygon([(ax, ay), (cx , cy), (dx , dy), (ax, ay)])
+r3 = DOL_CAL_FIP_FIS = Polygon([(ax, ay), (bx , by), (bx , 1.2), (ax, 1.2), (ax ,ay)])
+r4 = CAL_SIL_FIP_FIS = Polygon([(bx, by), (cx , cy), (cx , 1.2), (bx ,1.2), (bx, by)])
 
 
 """definicion de los datos, conversion de datos de serie a numericos tipo array"""
@@ -78,14 +82,33 @@ N = np.array(datos['N'])
 #algoritmo para decidir si un punto esta dentro del poligono
 i = 0
 puntos = []
+
 for numero in M:
     point = Point(N[i],M[i])
-    buleano = polygon.contains(point)
+    buleano = DOL_CAL_SIL_FIP.contains(point)
+
     if buleano == True:
-        puntos.append('primaria')
+        puntos.append('DOL_CAL_SIL_FIP')
+
     else:
-        puntos.append('secundaria')
+        buleano = DOL_SIL_ARC_FIP.contains(point)
+        if buleano == True:
+            puntos.append('DOL_SIL_ARC_FIP')
+
+        else:
+            buleano = DOL_CAL_FIP_FIS.contains(point)
+            if buleano == True:
+                puntos.append('DOL_CAL_FIP_FIS')
+
+            else:
+                buleano = CAL_SIL_FIP_FIS.contains(point)
+                if buleano == True:
+                    puntos.append('CAL_SIL_FIP_FIS')
+
+                else:
+                    puntos.append('null')
     i += 1
+
 
 #no recuerdo por que meti denuevo los datos ¿¿?¿?¿'¿¿'??? xdxdxd
 datos['Porosidad'] = puntos
@@ -108,68 +131,131 @@ Porosidad = np.array(datos['Porosidad'])
 datos.head()
 
 
-"""
-ahora toca armar el sistema de ecuaciones y resolverlo para todas las filas
-"""
-# define matrix A using Numpy arrays
-A = np.matrix([ [189, 43.5, 55.5,   120],
-                [1.0, 0.02, -0.035, 0.33],
-                [1.0, 2.87, 2.65,   2.35],
-                [1.0, 1.0,  1.0,    1.0]    ])
-A.shape
-
-#define matrix B
-b = np.matrix([ [DT],
-                [NPHI],
-                [RHOB],
-                [1] ])
-# b = np.array([73.9477, 0.1275, 2.6503, 1])
-B = np.array([59.8739, 0.0606, 2.5407, 1])
-
-x = np.around(np.linalg.solve(A, B), decimals = 4)
-x
-#datos.head()
-
-A_inverse = np.linalg.inv(A)
-
-X = A_inverse * b
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+r1 = str("DOL_CAL_SIL_FIP")
+r2 = str("DOL_SIL_ARC_FIP")
+r3 = str("DOL_CAL_FIP_FIS")
+r4 = str("CAL_SIL_FIP_FIS")
 
 
-FIP  =  X[0]
-VDOL =  X[1]
-VSIL =  X[2]
-VARC =  X[3]
 
 
-#La idea de poner 2 shape es para que el arreglo quede de tamaño (400,1)
-#hasta el momento no he encontrado como optimizar este detalle
-FIP = np.array(FIP.T)[0]
-FIP.shape
-FIP = np.array(FIP.T)[0]
-FIP.shape
+FIP = np.array([])
+VDOL = np.array([])
+VCAL = np.array([])
+VSIL = np.array([])
+VARC = np.array([])
+FIS = np.array([])
 
-VDOL = np.array(VDOL.T)[0]
-VDOL.shape
-VDOL = np.array(VDOL.T)[0]
-VDOL.shape
 
-VSIL = np.array(VSIL.T)[0]
-VSIL.shape
-VSIL = np.array(VSIL.T)[0]
-VSIL.shape
+for area in Porosidad:
 
-VARC = np.array(VARC.T)[0]
-VARC.shape
-VARC = np.array(VARC.T)[0]
-VARC.shape
+    i = 0
+    if area == r1:
+        A = np.array([ [189, 43.5, 47.5,   55.5],
+                        [1.0, 0.02, 0.0, -0.035],
+                        [1.0, 2.87, 2.71,   2.65],
+                        [1.0, 1.0,  1.0,    1.0]    ])
+        A.shape
+        #define matrix B
+        b = np.array([ DT[i],
+                        NPHI[i],
+                        RHOB[i],
+                        1 ])
+        X    = np.linalg.solve(A, b)
+        FIP  = np.append(FIP, [X[0]], axis=0)
+        VDOL = np.append(VDOL,[X[1]], axis=0)
+        VSIL = np.append(VSIL,[X[3]], axis=0)
+        VARC = np.append(VARC,[0],    axis=0)
+        VCAL = np.append(VCAL,[X[2]], axis=0)
+        FIS  = np.append(FIS, [0],    axis=0)
 
-VCAL = np.array(VARC*0.0000)
 
+
+    else:
+        if area == r2:
+            A = np.array([ [189, 43.5, 55.5,   120],
+                            [1.0, 0.02, -0.035, 0.33],
+                            [1.0, 2.87, 2.65,   2.35],
+                            [1.0, 1.0,  1.0,    1.0]    ])
+            A.shape
+            #define matrix B
+            b = np.array([ DT[i],
+                            NPHI[i],
+                            RHOB[i],
+                            1 ])
+            X    = np.linalg.solve(A, b)
+            FIP  = np.append(FIP, [X[0]], axis=0)
+            VDOL = np.append(VDOL,[X[1]], axis=0)
+            VSIL = np.append(VSIL,[X[2]], axis=0)
+            VARC = np.append(VARC,[X[3]], axis=0)
+            VCAL = np.append(VCAL,[0],    axis=0)
+            FIS  = np.append(FIS, [0],    axis=0)
+
+
+
+        else:
+            if area == r3:
+                A = np.matrix([ [189, 45.55, 43.5, 47.6],
+                                [1.0, 1.0, 0.02,    0.0],
+                                [1.0, 1.0, 2.87,   2.71],
+                                [1.0, 1.0,  1.0,    1.0]    ])
+                A.shape
+                #define matrix B
+                b = np.array([ DT[i],
+                                NPHI[i],
+                                RHOB[i],
+                                1 ])
+                X    = np.linalg.solve(A, b)
+                FIP  = np.append(FIP, [X[0]], axis=0)
+                VDOL = np.append(VDOL,[X[2]], axis=0)
+                VSIL = np.append(VSIL,[0],    axis=0)
+                VARC = np.append(VARC,[0],    axis=0)
+                VCAL = np.append(VCAL,[X[3]], axis=0)
+                FIS  = np.append(FIS, [X[1]], axis=0)
+
+
+
+            else:
+                if area == r4:
+                    A = np.array([  [189, 51.55, 47.6, 55.5],
+                                    [1.0, 1.0,  0.0, -0.035],
+                                    [1.0, 1.0, 2.71,   2.65],
+                                    [1.0, 1.0,  1.0,    1.0]    ])
+                    A.shape
+                    #define matrix B
+                    b = np.array([ DT[i],
+                                    NPHI[i],
+                                    RHOB[i],
+                                    1 ])
+                    X    = np.linalg.solve(A, b)
+                    FIP  = np.append(FIP, [X[0]], axis=0)
+                    VDOL = np.append(VDOL,[0],    axis=0)
+                    VSIL = np.append(VSIL,[X[3]], axis=0)
+                    VARC = np.append(VARC,[0],    axis=0)
+                    VCAL = np.append(VCAL,[X[2]], axis=0)
+                    FIS  = np.append(FIS, [X[1]], axis=0)
+
+
+                else:
+                    FIP  = np.append(FIP, [np.NaN], axis=0)
+                    VDOL = np.append(VDOL,[np.NaN], axis=0)
+                    VSIL = np.append(VSIL,[np.NaN], axis=0)
+                    VARC = np.append(VARC,[np.NaN], axis=0)
+                    VCAL = np.append(VCAL,[np.NaN], axis=0)
+                    FIS  = np.append(FIS, [np.NaN], axis=0)
+    i += 1
+
+FIS.shape
 datos['VDOL'] = np.around(VDOL,decimals = 4)
 datos['VCAL'] = np.around(VCAL,decimals = 4)
 datos['VSIL'] = np.around(VSIL,decimals = 4)
 datos['VARC'] = np.around(VARC,decimals = 4)
+datos['FIS']  = np.around(FIS, decimals = 4)
 datos['FIP']  = np.around(FIP, decimals = 4)
-datos.head()
 
-#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+VDOL[56]+ VCAL[56] +VSIL[56]+VARC[56]+FIS[56]+FIP[56]
+#plt.plot(VSIL,-1*PROF)
+print(datos)
