@@ -7,9 +7,16 @@ from mpl_toolkits.mplot3d import Axes3D
 
 #datos
 datos = pd.read_csv('eval_petro.csv')
-datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),   decimals =4)
-datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)),   decimals = 4)
-datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) ), decimals =4)
+# datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),   decimals =4)
+# datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)),   decimals = 4)
+# datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) ), decimals =4)
+
+M = np.array( 0.01 * (189-datos['DT'])/(datos['RHOB'] - 1) )
+N = np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1) )
+L = np.array( 0.01 * (189 - datos['DT'])/(1 - datos['NPHI']) )
+datos['M'] = np.around(M, decimals = 4)
+datos['N'] = np.around(N, decimals = 4)
+datos['L'] = np.around(L, decimals = 4)
 
 #Delimitacion de figura con valores mas precisos de minerales
 
@@ -76,8 +83,8 @@ r4 = CAL_SIL_FIP_FIS = Polygon([(bx, by), (cx , cy), (cx , 1.2), (bx ,1.2), (bx,
 
 
 """definicion de los datos, conversion de datos de serie a numericos tipo array"""
-M = np.array(datos['M'])
-N = np.array(datos['N'])
+#M = np.array(datos['M'])
+#N = np.array(datos['N'])
 
 #algoritmo para decidir si un punto esta dentro del poligono
 i = 0
@@ -112,7 +119,7 @@ for numero in M:
 
 #no recuerdo por que meti denuevo los datos ¿¿?¿?¿'¿¿'??? xdxdxd
 datos['Porosidad'] = puntos
-datos.to_csv('eval_petro_output.csv') #ahhh era para sacar un excel diferente
+#datos.to_csv('eval_petro_output.csv') #ahhh era para sacar un excel diferente
 
 
 #manipulacion de datos como arreglos
@@ -123,9 +130,9 @@ FR   = np.array(datos['FR'])
 DT   = np.array(datos['DT'])
 NPHI = np.array(datos['NPHI'])
 RHOB = np.array(datos['RHOB'])
-M    = np.array(datos['M'])
-N    = np.array(datos['N'])
-L    = np.array(datos['L'])
+#M    = np.array(datos['M'])
+#N    = np.array(datos['N'])
+#L    = np.array(datos['L'])
 Porosidad = np.array(datos['Porosidad'])
 #print(datos)
 datos.head()
@@ -286,7 +293,20 @@ datos['FITR']  = np.around(FITR, decimals = 4)
 SumaR = VDOLR + VCALR + VSILR + VARCR + FISR + FIPR
 datos['SumaR']  = np.around(SumaR, decimals = 4)
 
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+
+m   = np.log(1/FR) / np.log(FITR)
+FIF = FITR**m
+FIENT = FITR - FIF
+datos['m']  = np.around(m, decimals = 4)
+datos['FIF']  = np.around(FIF*100, decimals = 4)
+datos['FIENT']  = np.around(FIENT*100, decimals = 4)
+
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
 
+FIEFE = FITR*(1-VARCR)
+FIEFE_FIF = FIEFE / FIF
+FIZ = FITR / (1-FITR)
 
 print(datos)

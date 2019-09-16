@@ -12,9 +12,17 @@ import matplotlib.mlab as mlab
 
 #lectura de datos y calculo de las variables que faltan
 datos = pd.read_csv('eval_petro.csv')
-datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
-datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
-datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
+# datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
+# datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
+# datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
+M = np.array( 0.01 * (189-datos['DT'])/(datos['RHOB'] - 1) )
+N = np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1) )
+L = np.array( 0.01 * (189 - datos['DT'])/(1 - datos['NPHI']) )
+datos['M'] = np.around(M, decimals = 4)
+datos['N'] = np.around(N, decimals = 4)
+datos['L'] = np.around(L, decimals = 4)
+
+
 
 #pares de puntos para graficar el triangulo y las lineas de porosidad primaria
 #Arreglos que contienen DT, RHOB y NPHI de cada mineral
@@ -64,9 +72,9 @@ LLS = np.array(datos['LLS'])
 FR = np.array(datos['FR'])
 DT = np.array(datos['DT'])
 NPHI = np.array(datos['NPHI'])
-M = np.array(datos['M'])
-N = np.array(datos['N'])
-L = np.array(datos['L'])
+# M = np.array(datos['M'])
+# N = np.array(datos['N'])
+# L = np.array(datos['L'])
 
 #ubucacion de la figura y las subplots
 fig = plt.figure(figsize=(9, 9))
