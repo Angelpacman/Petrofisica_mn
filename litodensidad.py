@@ -7,9 +7,9 @@ from mpl_toolkits.mplot3d import Axes3D
 
 #datos
 datos = pd.read_csv('eval_petro.csv')
-# datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),   decimals =4)
-# datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)),   decimals = 4)
-# datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) ), decimals =4)
+#datos['DT'] = np.around(np.array( 189 - (datos['RHOB'] -1)*datos['M']/0.01 ),   decimals =4)
+#datos['N']  = np.around(np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1)),   decimals = 4)
+#datos['L']  = np.around(np.array( 0.01 * (189-datos['DT']) / (1-datos['NPHI']) ), decimals =4)
 
 M = np.array( 0.01 * (189-datos['DT'])/(datos['RHOB'] - 1) )
 N = np.array( (1 - datos['NPHI']) / (datos['RHOB'] - 1) )
@@ -38,12 +38,16 @@ param_lito(ARCILLA)
 
 ax = param_lito(DOLOMIA)[1]
 ay = param_lito(DOLOMIA)[0]
+az = param_lito(DOLOMIA)[2]
 bx = param_lito(CALIZA)[1]
 by = param_lito(CALIZA)[0]
+bz = param_lito(CALIZA)[2]
 cx = param_lito(SILICE)[1]
 cy = param_lito(SILICE)[0]
+cz = param_lito(SILICE)[2]
 dx = param_lito(ARCILLA)[1]
 dy = param_lito(ARCILLA)[0]
+dz = param_lito(ARCILLA)[2]
 
 P_inicial=[ax,bx,cx,dx,ax]
 P_final  =[ay,by,cy,dy,ay]
@@ -55,7 +59,7 @@ v_x2=[bx,bx]
 v_y2=[by,1.2]
 v_x3=[cx,cx]
 v_y3=[cy,1.2]
-
+"""
 #figura
 plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
@@ -69,7 +73,7 @@ plt.xlabel('N')
 plt.ylabel('M')
 plt.title('M vs N')
 plt.show()
-
+"""
 
 #librerias para trabajar con el poligono
 from shapely.geometry import Point
@@ -126,6 +130,7 @@ datos['Porosidad'] = puntos
 PROF = np.array(datos['PROF'])
 GR   = np.array(datos['GR'])
 LLS  = np.array(datos['LLS'])
+LLD  = np.array(datos['LLD'])
 FR   = np.array(datos['FR'])
 DT   = np.array(datos['DT'])
 NPHI = np.array(datos['NPHI'])
@@ -280,14 +285,23 @@ FIPR  = abs(FIP)/SumaABS
 FISR  = abs(FIS)/SumaABS
 FITR  = abs(FIT)/SumaABS
 
+#
+# datos['VDOLR(%)'] = np.around(VDOLR * 100,decimals = 4)
+# datos['VCALR(%)'] = np.around(VCALR * 100,decimals = 4)
+# datos['VSILR(%)'] = np.around(VSILR * 100,decimals = 4)
+# datos['VARCR(%)'] = np.around(VARCR * 100,decimals = 4)
+# datos['FIPR(%)']  = np.around(FIPR * 100, decimals = 4)
+# datos['FISR(%)']  = np.around(FISR * 100, decimals = 4)
+# datos['FITR(%)']  = np.around(FITR * 100, decimals = 4)
 
-datos['VDOLR'] = np.around(VDOLR,decimals = 4)
-datos['VCALR'] = np.around(VCALR,decimals = 4)
-datos['VSILR'] = np.around(VSILR,decimals = 4)
-datos['VARCR'] = np.around(VARCR,decimals = 4)
-datos['FIPR']  = np.around(FIPR, decimals = 4)
-datos['FISR']  = np.around(FISR, decimals = 4)
-datos['FITR']  = np.around(FITR, decimals = 4)
+
+datos['VDOLR'] = np.around(VDOLR ,decimals = 4)
+datos['VCALR'] = np.around(VCALR ,decimals = 4)
+datos['VSILR'] = np.around(VSILR ,decimals = 4)
+datos['VARCR'] = np.around(VARCR ,decimals = 4)
+datos['FIPR']  = np.around(FIPR  ,decimals = 4)
+datos['FISR']  = np.around(FISR  ,decimals = 4)
+datos['FITR']  = np.around(FITR  ,decimals = 4)
 
 
 SumaR = VDOLR + VCALR + VSILR + VARCR + FISR + FIPR
@@ -299,14 +313,101 @@ datos['SumaR']  = np.around(SumaR, decimals = 4)
 m   = np.log(1/FR) / np.log(FITR)
 FIF = FITR**m
 FIENT = FITR - FIF
-datos['m']  = np.around(m, decimals = 4)
-datos['FIF']  = np.around(FIF*100, decimals = 4)
-datos['FIENT']  = np.around(FIENT*100, decimals = 4)
+# datos['m']  = np.around(m, decimals = 4)
+# datos['FIF(%)']  = np.around(FIF*100, decimals = 4)
+# datos['FIENT(%)']  = np.around(FIENT*100, decimals = 4)
 
-datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+datos['m']  = np.around(m, decimals = 4)
+datos['FIF']  = np.around(FIF, decimals = 4)
+datos['FIENT']  = np.around(FIENT, decimals = 4)
+
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
 
 FIEFE = FITR*(1-VARCR)
 FIEFE_FIF = FIEFE / FIF
 FIZ = FITR / (1-FITR)
 
-print(datos)
+datos['FIEFE']      = np.around( FIEFE , decimals =4)
+datos['FIEFE_FIF']  = np.around( FIEFE_FIF, decimals =4)
+datos['FIZ']        = np.around( FIZ, decimals =4)
+
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+#print(datos)
+"""
+plt.scatter(FITR,FR)
+plt.xscale("log")
+#plt.yscale("log")
+plt.xlim(0.01 ,1)
+# plt.ylim(0,1000)
+plt.grid()
+plt.show()
+"""
+def beta1(x,y):
+    termino1 = x - np.average(x)
+    termino2 = y - np.average(y)
+    Sxy = sum(termino1*termino2)
+    Sxx = sum(termino1*termino1)
+    return Sxy/Sxx
+
+def beta0(x,y):
+    return np.average(y) - beta1(x,y)*np.average(x)
+
+
+def plot_recta(x,y):
+    b1 = beta1(x,y)
+    b0 = beta0(x,y)
+    puntos_x = np.linspace(0.01, 1, 100)
+    puntos_y = b0+b1*puntos_x
+    plt.plot(puntos_x,puntos_y)
+    plt.plot(x,y, 'r.')
+    # plt.title(-1*np.tan(b1))
+    plt.title(np.tan(b1))
+    plt.xlabel("Porosidad")
+    plt
+    plt.ylabel("FR")
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.xlim(0.01 ,1)
+    plt.ylim(1,1000)
+    plt.grid(True,which="both",ls="-")
+    plt.show()
+
+"""
+plot_recta(FITR,FR)
+#plot_recta(FIT,LLD)
+#datos['FITR'].describe()
+"""
+
+from scipy.stats import linregress
+
+#slope, intercept, r_value, p_value, std_err  = linregress(np.log10(FIT), np.log10(FR))
+slope, intercept, r_value, p_value, std_err  = linregress(FITR, FR)
+X = np.linspace(0.06,1, 100)
+#plt.plot(np.log(X), intercept + slope*X)
+#plt.plot(np.log10(X), np.log10(intercept) + slope*np.log10(X))
+#plt.plot(FITR, intercept + slope*FITR, 'r--')
+plt.plot(X[:29], intercept + slope*X[:29],'--',  linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
+plt.style.use('ggplot')
+#plt.scatter(FIT, np.log10(FR))
+plt.plot(FITR, FR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.ylim(1,1000)
+#plt.ylim(55.3,55.5)
+plt.xlim(0.01,1)
+#plt.xlim(0.0976,0.0982)
+plt.xscale("log")
+plt.yscale("log")
+plt.grid(True,which="both",ls="-", color='0.85')
+plt.title('Gráfica 6, FR vs ' + r'$\phi$')
+plt.xlabel("Porosidad total")
+plt.ylabel("Factor de Resistividad")
+#plt.plot(X,33.758*X**-0.224)
+plt.plot(X, 19.9543920761623*X**-0.4366084898964984, linewidth=1.5, label='$FR=19.9543\phi^{-0.4366}$', color='c')
+plt.legend()
+plt.show()
+
+
+#linregress(np.log10(FITR), np.log10(FR))
+a = FR * FITR ** 0.4366084898964984
+np.mean(a)
+for style in plt.style.available:
+    print(style)
