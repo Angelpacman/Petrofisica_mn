@@ -8,6 +8,7 @@ from matplotlib.colors import LinearSegmentedColormap
 
 #captura de los datos
 datos = pd.read_csv("eval_petro.csv")
+# datos = pd.read_csv("gabs.csv")
 #datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
 #datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
 #datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
@@ -130,3 +131,12 @@ ax.scatter(N, L, s=10, c = coli, marker='o')
 plt.colorbar(p2d)
 plt.show()
 """
+
+from mayavi import mlab
+#mlab.points3d(N, M, L, scale_factor = 0.01)
+#mlab.gcf()
+
+s = mlab.points3d(N, M, L, mode = 'point', extent = [0,1,0,1,0,1])
+mlab.axes(s, ranges = [min(N), max(N), min(M), max(M), min(L), max(L)])
+
+mlab.show()

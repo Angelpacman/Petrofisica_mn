@@ -383,31 +383,122 @@ from scipy.stats import linregress
 #slope, intercept, r_value, p_value, std_err  = linregress(np.log10(FIT), np.log10(FR))
 slope, intercept, r_value, p_value, std_err  = linregress(FITR, FR)
 X = np.linspace(0.06,1, 100)
-#plt.plot(np.log(X), intercept + slope*X)
-#plt.plot(np.log10(X), np.log10(intercept) + slope*np.log10(X))
-#plt.plot(FITR, intercept + slope*FITR, 'r--')
 plt.plot(X[:29], intercept + slope*X[:29],'--',  linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
 plt.style.use('ggplot')
-#plt.scatter(FIT, np.log10(FR))
 plt.plot(FITR, FR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
 plt.ylim(1,1000)
-#plt.ylim(55.3,55.5)
 plt.xlim(0.01,1)
-#plt.xlim(0.0976,0.0982)
 plt.xscale("log")
 plt.yscale("log")
 plt.grid(True,which="both",ls="-", color='0.85')
 plt.title('Gráfica 6, FR vs ' + r'$\phi$')
 plt.xlabel("Porosidad total")
 plt.ylabel("Factor de Resistividad")
-#plt.plot(X,33.758*X**-0.224)
 plt.plot(X, 19.9543920761623*X**-0.4366084898964984, linewidth=1.5, label='$FR=19.9543\phi^{-0.4366}$', color='c')
 plt.legend()
 plt.show()
 
 
-#linregress(np.log10(FITR), np.log10(FR))
-a = FR * FITR ** 0.4366084898964984
-np.mean(a)
-for style in plt.style.available:
-    print(style)
+mARCHIE = abs(np.ones(400) * linregress(np.log10(FITR), np.log10(FR))[0])
+mARCHIE
+ai = FR * FITR ** 0.4366084898964984
+a = np.mean(ai)
+a
+FRcARCHIE = a * FITR **(-1*mARCHIE)
+np.mean(FRcARCHIE)
+#for style in plt.style.available:
+#    print(style)
+type(mARCHIE)
+Err_mARCHIE = abs((m - abs(mARCHIE))/m) * 100
+
+datos['mARCHIE']    = np.around(mARCHIE, decimals = 4)
+datos['FRcARCHIE']  = np.around(FRcARCHIE, decimals = 4)
+datos['Err_mARCHIE(%)']= np.around(Err_mARCHIE, decimals = 4)
+
+
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+
+mSHELL = 1.87+(0.019/FITR)
+FRcSHELL = a * FITR **(-1*mSHELL)
+Err_mSHELL = abs((m - abs(mSHELL))/m) * 100
+
+datos['mSHELL']    = np.around(mSHELL, decimals = 4)
+datos['FRcSHELL']  = np.around(FRcSHELL, decimals = 4)
+datos['Err_mSHELL(%)']= np.around(Err_mSHELL, decimals = 4)
+
+
+
+
+mBORAI = 2.2 - (0.035/(FITR+0.042))
+FRcBORAI = a * FITR **(-1*mBORAI)
+Err_mBORAI = abs((m - abs(mBORAI))/m) * 100
+
+datos['mBORAI']    = np.around(mBORAI, decimals = 4)
+datos['FRcBORAI']  = np.around(FRcBORAI, decimals = 4)
+datos['Err_mBORAI(%)']= np.around(Err_mBORAI, decimals = 4)
+
+
+
+
+slope, intercept, r_value, p_value, std_err  = linregress(np.log10(LLD), np.log10(FITR))
+mnolog = linregress(LLD, FITR)[0]
+intercept_nolog = linregress(LLD, FITR)[1]
+mPICKETT = -np.log10(FR)/np.log10(FITR)
+mPICKETT = linregress(np.log10(LLD), np.log10(FITR))[0]
+
+#mPICKETT = abs(np.ones(400) * linregress(np.log10(LLD), np.log10(FITR))[0])
+#mPICKETT
+aPICKETT = FITR * LLD ** mPICKETT
+a = np.mean(aPICKETT)
+a
+X = np.linspace(1,1000, 400)
+plt.plot(X, intercept_nolog + mnolog*X,'--',  linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
+plt.style.use('ggplot')
+plt.plot(LLD,FITR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.xlim(0.1,1000)
+plt.ylim(0.06,0.11)
+plt.xscale("log")
+#plt.yscale("log")
+plt.grid(True,which="both",ls="-", color='0.85')
+plt.title('Gráfica 6, FR vs ' + r'$\phi$')
+plt.xlabel("Resistividad DLL")
+plt.ylabel("Porosidad total")
+plt.plot(X, a*X**mPICKETT, linewidth=1.5, label='$FR=19.9543\phi^{-0.4366}$', color='c')
+plt.legend()
+plt.show()
+
+
+
+mPICKETT = np.mean(-(np.log(FR)/np.log(FITR)))
+RW = LLD*FITR**mPICKETT
+FRcPICKETT = 1 * FITR **(-1*mPICKETT)
+Err_mPICKETT = abs((m - abs(mPICKETT))/m) * 100
+
+datos['mPICKETT']    = np.around(mPICKETT, decimals = 4)
+datos['FRcPICKETT']  = np.around(FRcPICKETT, decimals = 4)
+datos['Err_mPICKETT(%)']= np.around(Err_mPICKETT, decimals = 4)
+
+
+
+
+Ik = 84105*(FITR**(m+2) /  (1-FITR)**2)
+
+
+#mraiga, col(47)
+mRAIGA = 1.28 + 2 / (np.log10(Ik) + 2)
+FRcRAIGA = 1 * FITR **(-1*mRAIGA)
+Err_mRAIGA = abs((m - abs(mRAIGA))/m) * 100
+
+datos['mRAIGA']    = np.around(mRAIGA, decimals = 4)
+datos['FRcRAIGA']  = np.around(FRcRAIGA, decimals = 4)
+datos['Err_mRAIGA(%)']= np.around(Err_mRAIGA, decimals = 4)
+
+
+TFrFIT = FR * FITR
+TFIF_m = FITR * (FITR ** -m)
+TFIF_FIENT = FITR / FITR ** m
+
+datos['TFrFIT']     = np.around(TFrFIT, decimals = 4)
+datos['TFIF_m']     = np.around(TFIF_m, decimals = 4)
+datos['TFIF_FIENT'] = np.around(TFIF_FIENT, decimals = 4)
