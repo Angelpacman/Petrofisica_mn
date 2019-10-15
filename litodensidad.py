@@ -383,7 +383,7 @@ from scipy.stats import linregress
 #slope, intercept, r_value, p_value, std_err  = linregress(np.log10(FIT), np.log10(FR))
 slope, intercept, r_value, p_value, std_err  = linregress(FITR, FR)
 X = np.linspace(0.06,1, 100)
-plt.plot(X[:29], intercept + slope*X[:29],'--',  linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
+plt.plot(X[:29], intercept + slope*X[:29],'--', linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
 plt.style.use('ggplot')
 plt.plot(FITR, FR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
 plt.ylim(1,1000)
@@ -464,7 +464,7 @@ plt.grid(True,which="both",ls="-", color='0.85')
 plt.title('Gráfica 6, FR vs ' + r'$\phi$')
 plt.xlabel("Resistividad DLL")
 plt.ylabel("Porosidad total")
-plt.plot(X, a*X**mPICKETT, linewidth=1.5, label='$FR=19.9543\phi^{-0.4366}$', color='c')
+plt.plot(X, a*X**mPICKETT, linewidth=1.5, color='c')#, label='$FR=19.9543\phi^{-0.4366}$'
 plt.legend()
 plt.show()
 
@@ -502,3 +502,37 @@ TFIF_FIENT = FITR / FITR ** m
 datos['TFrFIT']     = np.around(TFrFIT, decimals = 4)
 datos['TFIF_m']     = np.around(TFIF_m, decimals = 4)
 datos['TFIF_FIENT'] = np.around(TFIF_FIENT, decimals = 4)
+
+#col(53)
+CoParPIRSON = (FITR - FIPR) / (FITR * (1-FIPR))
+CoParCLASE  = FISR / FITR
+FImatTAREK  = (FITR**m - FITR) / (FITR**m - 1)
+FIfracTAREK = (FITR**(m+1) - FITR**m) / (FITR**m - 1)
+CoParTAREK  =( FIfracTAREK / (FImatTAREK + FIfracTAREK))
+Err_CoParLITO = np.ones(400)
+i = 0
+for coeficiente in CoParPIRSON:
+    if CoParPIRSON[i] == 0.0:
+        # Err_CoParLITO[i] = abs((CoParPIRSON[i] - CoParTAREK[i]) / CoParPIRSON[i]) * 100
+        #np.append(Err_CoParLITO, np.NaN)
+        Err_CoParLITO[i] = np.NaN
+    else:
+        #np.append(Err_CoParLITO, abs((CoParTAREK[i] - CoParPIRSON[i]) / CoParTAREK[i])*100)
+        Err_CoParLITO[i] = abs((CoParPIRSON[i] - CoParTAREK[i]) / CoParPIRSON[i])*100
+    i += 1
+#Err_CoParLITO = abs((CoParPIRSON - CoParTAREK) / CoParPIRSON) * 100
+#Err_CoParLITO
+InvTORTUOSIDAD = TFrFIT ** -1
+CONECTIVIDAD = np.log10(1 - FR ** -1) / np.log10(1-FITR)
+
+
+datos['CoParPIRSON']    = np.around(CoParPIRSON,decimals = 4)
+datos['CoParCLASE']     = np.around(CoParCLASE, decimals = 4)
+datos['FImatTAREK']     = np.around(FImatTAREK, decimals = 4)
+datos['FIfracTAREK']    = np.around(FIfracTAREK,decimals = 4)
+datos['CoParTAREK']     = np.around(CoParTAREK, decimals = 4)
+datos['Err_CoParLITO']  = np.around(Err_CoParLITO,decimals = 4)
+datos['InvTORTUOSIDAD'] = np.around(InvTORTUOSIDAD,decimals = 4)
+datos['CONECTIVIDAD']   = np.around(CONECTIVIDAD,   decimals = 4)
+
+datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
