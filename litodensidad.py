@@ -159,10 +159,10 @@ VSIL = np.array([])
 VARC = np.array([])
 FIS  = np.array([])
 
-
+i = 0
 for area in Porosidad:
 
-    i = 0
+
     if area == r1:
         A = np.array([ [189, 43.5, 47.5,   55.5],
                         [1.0, 0.02, 0.0, -0.035],
@@ -536,3 +536,8 @@ datos['InvTORTUOSIDAD'] = np.around(InvTORTUOSIDAD,decimals = 4)
 datos['CONECTIVIDAD']   = np.around(CONECTIVIDAD,   decimals = 4)
 
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+
+
+datos['Porosidad'].value_counts()
+#datos['FITR'].value_counts()
