@@ -580,7 +580,7 @@ for numero in RGP35:
                     TGP.append("Macro")
                 else:
                     TGP.append("Mega")
-TGP
+#TGP
 SP = ((4.46*10**10)/((FR**2.2)*(FITR**1.2) * Ik))**(1/2)
 
 GS = (6*(1-FITR))/SP
@@ -592,12 +592,15 @@ IZE = IRE/FIZ
 m_Evans = (0.0811 * FITR) + 1.4328
 
 
-datos['RGP35']    = np.around(RGP35,    decimals = 4)
-datos['TGP']    = np.around(TGP,    decimals = 4)
-datos['SP']    = np.around(SP,    decimals = 4)
-datos['GS']    = np.around(GS,    decimals = 4)
+datos['RGP35']  = np.around(RGP35,  decimals = 4)
+datos['TGP']    = TGP
+datos['SP']     = np.around(SP,     decimals = 4)
+datos['GS']     = np.around(GS,     decimals = 4)
 datos['ICY']    = np.around(ICY,    decimals = 4)
 datos['IZF']    = np.around(IZF,    decimals = 4)
 datos['IRE']    = np.around(IRE,    decimals = 4)
 datos['IZE']    = np.around(IZE,    decimals = 4)
-datos['m_Evans']    = np.around(m_Evans,    decimals = 4)
+datos['m_Evans']= np.around(m_Evans,decimals = 4)
+
+
+datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
