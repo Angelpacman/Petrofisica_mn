@@ -159,10 +159,10 @@ VSIL = np.array([])
 VARC = np.array([])
 FIS  = np.array([])
 
+
+
 i = 0
 for area in Porosidad:
-
-
     if area == r1:
         A = np.array([ [189, 43.5, 47.5,   55.5],
                         [1.0, 0.02, 0.0, -0.035],
@@ -382,7 +382,7 @@ from scipy.stats import linregress
 
 #slope, intercept, r_value, p_value, std_err  = linregress(np.log10(FIT), np.log10(FR))
 slope, intercept, r_value, p_value, std_err  = linregress(FITR, FR)
-X = np.linspace(0.06,1, 100)
+X = np.linspace(0.01,1, 100)
 plt.plot(X[:29], intercept + slope*X[:29],'--', linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
 plt.style.use('ggplot')
 plt.plot(FITR, FR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
@@ -394,7 +394,9 @@ plt.grid(True,which="both",ls="-", color='0.85')
 plt.title('Gráfica 6, FR vs ' + r'$\phi$')
 plt.xlabel("Porosidad total")
 plt.ylabel("Factor de Resistividad")
-plt.plot(X, 19.9543920761623*X**-0.4366084898964984, linewidth=1.5, label='$FR=19.9543\phi^{-0.4366}$', color='c')
+plt.plot(X, 12.930633472943219
+*X**-0.42514508
+, linewidth=1.5, label='$FR=12.9306\phi^{-0.4251}$', color='c')#0.4366084898964984 19.9543920761623
 plt.legend()
 plt.show()
 
@@ -535,9 +537,67 @@ datos['Err_CoParLITO']  = np.around(Err_CoParLITO,decimals = 4)
 datos['InvTORTUOSIDAD'] = np.around(InvTORTUOSIDAD,decimals = 4)
 datos['CONECTIVIDAD']   = np.around(CONECTIVIDAD,   decimals = 4)
 
-datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
 
 
 
 datos['Porosidad'].value_counts()
-#datos['FITR'].value_counts()
+datos['FITR'].value_counts()
+
+
+
+
+#col(61) indice de intensidad de fracturamiento
+IIF = CoParPIRSON*FITR
+w = (FITR**m - FITR**(m-1)) / (FITR**m - 1) #indice de almacenamiento de fractura
+C = ((1-FITR)**2) / (FR*FITR - 1) #estructura porosa eficiente
+FIELE = C*FITR / ((1-FITR)**2 + C)
+Ik
+CteKC = TFrFIT * m
+datos['IIF']    = np.around(IIF,    decimals = 4)
+datos['w']      = np.around(w,      decimals = 4)
+datos['FIELE']  = np.around(FIELE,  decimals = 4)
+datos['Ik']     = np.around(Ik,     decimals = 4)
+datos['CteKC']  = np.around(CteKC,  decimals = 4)
+
+
+
+#col(67)
+RGP35 = 2.66*(Ik/(FITR*100))**0.45
+TGP = []
+i = 0
+for numero in RGP35:
+    if numero < 0.5:
+        TGP.append("Nano")
+    else:
+        if numero > 0.5 and numero < 2:
+            TGP.append("Micro")
+        else:
+            if numero > 2 and numero < 4:
+                TGP.append("Meso")
+            else:
+                if numero > 4 and numero < 10:
+                    TGP.append("Macro")
+                else:
+                    TGP.append("Mega")
+TGP
+SP = ((4.46*10**10)/((FR**2.2)*(FITR**1.2) * Ik))**(1/2)
+
+GS = (6*(1-FITR))/SP
+
+ICY = 0.0314*(Ik/FITR)**(1/2)
+IZF = ICY / FIZ
+IRE = (FITR/FR)**(1/2)
+IZE = IRE/FIZ
+m_Evans = (0.0811 * FITR) + 1.4328
+
+
+datos['RGP35']    = np.around(RGP35,    decimals = 4)
+datos['TGP']    = np.around(TGP,    decimals = 4)
+datos['SP']    = np.around(SP,    decimals = 4)
+datos['GS']    = np.around(GS,    decimals = 4)
+datos['ICY']    = np.around(ICY,    decimals = 4)
+datos['IZF']    = np.around(IZF,    decimals = 4)
+datos['IRE']    = np.around(IRE,    decimals = 4)
+datos['IZE']    = np.around(IZE,    decimals = 4)
+datos['m_Evans']    = np.around(m_Evans,    decimals = 4)
