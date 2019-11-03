@@ -160,9 +160,9 @@ VARC = np.array([])
 FIS  = np.array([])
 
 
-for area in Porosidad:
 
-    i = 0
+i = 0
+for area in Porosidad:
     if area == r1:
         A = np.array([ [189, 43.5, 47.5,   55.5],
                         [1.0, 0.02, 0.0, -0.035],
@@ -382,7 +382,7 @@ from scipy.stats import linregress
 
 #slope, intercept, r_value, p_value, std_err  = linregress(np.log10(FIT), np.log10(FR))
 slope, intercept, r_value, p_value, std_err  = linregress(FITR, FR)
-X = np.linspace(0.06,1, 100)
+X = np.linspace(0.01,1, 100)
 plt.plot(X[:29], intercept + slope*X[:29],'--', linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
 plt.style.use('ggplot')
 plt.plot(FITR, FR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
@@ -391,10 +391,12 @@ plt.xlim(0.01,1)
 plt.xscale("log")
 plt.yscale("log")
 plt.grid(True,which="both",ls="-", color='0.85')
-plt.title('Gráfica 6, FR vs ' + r'$\phi$')
+plt.title('Gráfico de Archie, FR vs ' + r'$\phi$')
 plt.xlabel("Porosidad total")
 plt.ylabel("Factor de Resistividad")
-plt.plot(X, 19.9543920761623*X**-0.4366084898964984, linewidth=1.5, label='$FR=19.9543\phi^{-0.4366}$', color='c')
+plt.plot(X, 12.930633472943219
+*X**-0.42514508
+, linewidth=1.5, label='$FR=12.9306\phi^{-0.4251}$', color='c')#0.4366084898964984 19.9543920761623
 plt.legend()
 plt.show()
 
@@ -452,19 +454,24 @@ mPICKETT = linregress(np.log10(LLD), np.log10(FITR))[0]
 aPICKETT = FITR * LLD ** mPICKETT
 a = np.mean(aPICKETT)
 a
+mPICKETT
 X = np.linspace(1,1000, 400)
 plt.plot(X, intercept_nolog + mnolog*X,'--',  linewidth=1.5, label = 'regresión lineal', color='orange') #'g--',
 plt.style.use('ggplot')
 plt.plot(LLD,FITR, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
-plt.xlim(0.1,1000)
-plt.ylim(0.06,0.11)
+plt.xlim(1,1000)
+plt.ylim(0.001,1)
 plt.xscale("log")
-#plt.yscale("log")
+plt.yscale("log")
 plt.grid(True,which="both",ls="-", color='0.85')
-plt.title('Gráfica 6, FR vs ' + r'$\phi$')
+plt.title('Gráfico de Pickett, DLL vs ' + r'$\phi$')
 plt.xlabel("Resistividad DLL")
 plt.ylabel("Porosidad total")
-plt.plot(X, a*X**mPICKETT, linewidth=1.5, color='c')#, label='$FR=19.9543\phi^{-0.4366}$'
+#plt.plot(X, a*X**mPICKETT, linewidth=1.5, color='c')#, label='$FR=19.9543\phi^{-0.4366}$'
+#plt.plot(X, 1.3*X**-1.9, linewidth=1.5, color='c')#, label='$FR=19.9543\phi^{-0.4366}$'
+#plt.plot(X, 3*X**-2.5, linewidth=1.5, color='c')#, label='$FR=19.9543\phi^{-0.4366}$'
+plt.plot(X, 12.8*X**-3.1, linewidth=1.5, color='c', label='si $\phi = 1; Rw = 2.1708$')#, label='$FR=19.9543\phi^{-0.4366}$'
+
 plt.legend()
 plt.show()
 
@@ -504,10 +511,11 @@ datos['TFIF_m']     = np.around(TFIF_m, decimals = 4)
 datos['TFIF_FIENT'] = np.around(TFIF_FIENT, decimals = 4)
 
 #col(53)
-CoParPIRSON = (FITR - FIPR) / (FITR * (1-FIPR))
-CoParCLASE  = FISR / FITR
+# CoParPIRSON = (FITR - FIPR) / (FITR * (1-FIPR))
 FImatTAREK  = (FITR**m - FITR) / (FITR**m - 1)
 FIfracTAREK = (FITR**(m+1) - FITR**m) / (FITR**m - 1)
+CoParPIRSON = ((FImatTAREK + FIfracTAREK) - FImatTAREK) / ((FImatTAREK + FIfracTAREK) * (1-FImatTAREK))
+CoParCLASE  = FImatTAREK / (FImatTAREK + FIfracTAREK)
 CoParTAREK  =( FIfracTAREK / (FImatTAREK + FIfracTAREK))
 Err_CoParLITO = np.ones(400)
 i = 0
@@ -535,4 +543,210 @@ datos['Err_CoParLITO']  = np.around(Err_CoParLITO,decimals = 4)
 datos['InvTORTUOSIDAD'] = np.around(InvTORTUOSIDAD,decimals = 4)
 datos['CONECTIVIDAD']   = np.around(CONECTIVIDAD,   decimals = 4)
 
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+
+
+datos['Porosidad'].value_counts()
+datos['FITR'].value_counts()
+
+
+
+
+#col(61) indice de intensidad de fracturamiento
+IIF = CoParPIRSON*FITR
+w = (FITR**m - FITR**(m-1)) / (FITR**m - 1) #indice de almacenamiento de fractura
+C = ((1-FITR)**2) / (FR*FITR - 1) #estructura porosa eficiente
+FIELE = C*FITR / ((1-FITR)**2 + C)
+#Ik
+CteKC = TFrFIT * m
+datos['IIF']    = np.around(IIF,    decimals = 4)
+datos['w']      = np.around(w,      decimals = 4)
+datos['C']      = np.around(C,      decimals = 4)
+datos['FIELE']  = np.around(FIELE,  decimals = 4)
+datos['Ik']     = np.around(Ik,     decimals = 4)
+datos['CteKC']  = np.around(CteKC,  decimals = 4)
+
+
+
+#col(67)
+RGP35 = 2.66*(Ik/(FITR*100))**0.45
+TGP = []
+i = 0
+for numero in RGP35:
+    if numero < 0.5:
+        TGP.append("Nano")
+    else:
+        if numero > 0.5 and numero < 2:
+            TGP.append("Micro")
+        else:
+            if numero > 2 and numero < 4:
+                TGP.append("Meso")
+            else:
+                if numero > 4 and numero < 10:
+                    TGP.append("Macro")
+                else:
+                    TGP.append("Mega")
+#TGP
+SP = ((4.46*10**10)/((FR**2.2)*(FITR**1.2) * Ik))**(1/2)
+
+GS = (6*(1-FITR))/SP
+
+ICY = 0.0314*(Ik/FITR)**(1/2)
+IZF = ICY / FIZ
+IRE = (FITR/FR)**(1/2)
+IZE = IRE/FIZ
+m_Evans = (0.0811 * FITR) + 1.4328
+
+
+datos['RGP35']  = np.around(RGP35,  decimals = 4)
+datos['TGP']    = TGP
+datos['SP']     = np.around(SP,     decimals = 4)
+datos['GS']     = np.around(GS,     decimals = 4)
+datos['ICY']    = np.around(ICY,    decimals = 4)
+datos['IZF']    = np.around(IZF,    decimals = 4)
+datos['IRE']    = np.around(IRE,    decimals = 4)
+datos['IZE']    = np.around(IZE,    decimals = 4)
+datos['m_Evans']= np.around(m_Evans,decimals = 4)
+
+
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
+datos.info()
+
+plt.title("Grárafico de frecuencia de M")
+plt.xlabel("M")
+plt.xlim(0.5, 0.9)
+plt.ylabel("Frecuencia")
+plt.hist(M, bins = 30 )
+plt.show()
+plt.title("Grárafico de frecuencia de N")
+plt.xlabel("N")
+plt.xlim(0.5, 0.9)
+plt.ylabel("Frecuencia")
+plt.hist(N, bins = 30 )
+plt.show()
+plt.title("Grárafico de frecuencia de L")
+plt.xlabel("L")
+plt.xlim(1, 1.5)
+plt.ylabel("Frecuencia")
+plt.hist(L, bins = 30 )
+plt.show()
+
+
+plt.title("m vs FIENT")
+plt.xlabel("FIENT")
+plt.ylabel("m")
+plt.plot(FIENT, m, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+
+plt.title("$\phi f$ vs T")
+plt.xlabel("FIF")
+plt.ylabel("T")
+plt.plot(FIF, TFrFIT, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+
+plt.title("T vs m")
+plt.xlabel("T")
+plt.ylabel("m")
+plt.plot(TFrFIT,m, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+plt.title("1/T vs Coeficente de partición")
+plt.xlabel("1/T")
+plt.ylabel("Coeficiente de partición")
+plt.plot(InvTORTUOSIDAD,CoParTAREK, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+plt.title("CoParTAREK vs Conectividad")
+plt.xlabel("Conectividad 'r'")
+plt.ylabel("CoParTAREK")
+plt.plot(CONECTIVIDAD,CoParTAREK, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+plt.title("T vs CoParTAREK")
+plt.xlabel("CoParTAREK")
+plt.xscale("log")
+plt.yscale("log")
+plt.ylabel("T")
+plt.grid(True, which ='both')
+plt.plot(CoParTAREK,TFrFIT, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+P = (FITR ** 3)/((1-FITR)**2)
+
+plt.title("Ik vs P")
+plt.xlabel("P")
+plt.xscale("log")
+plt.yscale("log")
+plt.ylabel("Indice de permeabilidad Ik")
+plt.grid(True, which ='both')
+plt.plot(P,Ik, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+
+
+
+plt.title("Ik vs $\phi$ent")
+plt.xlabel("$\phi$ent")
+plt.xscale("log")
+plt.xlim(0.0001,0.1)
+plt.yscale("log")
+plt.ylabel("Ik")
+plt.grid(True, which ='both')
+plt.plot(FIENT,Ik, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+
+plt.title("SP vs CteKC")
+plt.xlabel("Constante K-C")
+plt.xscale("log")
+plt.xlim(0.01,100)
+plt.yscale("log")
+plt.ylabel("SP")
+plt.grid(True, which ='both')
+plt.plot(CteKC,SP, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+plt.title("Ik vs FR")
+plt.xlabel("Factor de resistividad FR")
+plt.xscale("log")
+plt.yscale("log")
+plt.ylabel("Indice de permeabilidad Ik")
+plt.xlim(1,1000)
+plt.grid(True, which ='both')
+plt.plot(FR,Ik, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+plt.title("SP vs GS")
+plt.xlabel("Tamaño de grano GS")
+plt.xscale("log")
+plt.yscale("log")
+plt.ylabel("Superficie especifica poral")
+#plt.xlim(1,1000)
+plt.grid(True, which ='both')
+plt.plot(GS,SP, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+plt.title("GS vs mIFV")
+plt.xlabel("mIFV")
+plt.xscale("log")
+plt.yscale("log")
+plt.ylabel("Tamaño de grano GS")
+plt.ylim(0.00001,0.01)
+plt.xlim(0.1,10)
+plt.grid(True, which ='both')
+plt.plot(m,GS, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
