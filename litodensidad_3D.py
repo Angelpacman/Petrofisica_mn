@@ -101,20 +101,21 @@ az.set_zlabel('L')
 #plt.colorbar(p3d)
 plt.show()
 
-"""
+
 
 ##ML
 P_M  =[0.7781,0.8269,0.8091,0.7781]
 P_L = [1.4847, 1.414, 1.2898, 1.4847]
 fig = plt.figure()
 ax = fig.add_subplot(111)
+# ax.title("Grafico M vs L")
 ax.plot(P_M,P_L)
 ax.grid()
 ax.set_xlabel('M')
 ax.set_ylabel('L')
 ax.scatter(M, L, s=10, c = col, marker='o')
 #p2d = ax.scatter(M, L, s=10, c = col, marker='o')
-#plt.colorbar(p2d)
+plt.colorbar(p2d)
 
 ##NL
 P_N = [0.5241,0.5848, 0.6273, 0.5241]
@@ -122,17 +123,18 @@ P_L = [1.4847, 1.414, 1.2898, 1.4847]
 coli = np.linspace(1,99,400)
 fig = plt.figure()
 ax = fig.add_subplot(111)
+# ax.title("Grafico N vs L")
 ax.plot(P_N,P_L)
 ax.grid()
 ax.set_xlabel('N')
 ax.set_ylabel('L')
-ax.scatter(N, L, s=10, c = coli, marker='o')
+ax.scatter(N, L, s=10, c = col, marker='o')
 #p2d = ax.scatter(M, L, s=10, c = coli, marker='o')
 plt.colorbar(p2d)
 plt.show()
-"""
 
-from mayavi import mlab
+
+"""from mayavi import mlab
 #mlab.points3d(N, M, L, scale_factor = 0.01)
 #mlab.gcf()
 
@@ -140,3 +142,4 @@ s = mlab.points3d(N, M, L, mode = 'point', extent = [0,1,0,1,0,1])
 mlab.axes(s, ranges = [min(N), max(N), min(M), max(M), min(L), max(L)])
 
 mlab.show()
+"""
