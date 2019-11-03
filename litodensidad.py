@@ -394,9 +394,7 @@ plt.grid(True,which="both",ls="-", color='0.85')
 plt.title('Gráfico de Archie, FR vs ' + r'$\phi$')
 plt.xlabel("Porosidad total")
 plt.ylabel("Factor de Resistividad")
-plt.plot(X, 12.930633472943219
-*X**-0.42514508
-, linewidth=1.5, label='$FR=12.9306\phi^{-0.4251}$', color='c')#0.4366084898964984 19.9543920761623
+plt.plot(X, 12.930633472943219*X**-0.42514508, linewidth=1.5, label='$FR=12.9306\phi^{-0.4251}$', color='c')#0.4366084898964984 19.9543920761623
 plt.legend()
 plt.show()
 
@@ -614,19 +612,19 @@ datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
 
 datos.info()
 
-plt.title("Grárafico de frecuencia de M")
+plt.title("Gráfico de frecuencia de M")
 plt.xlabel("M")
 plt.xlim(0.5, 0.9)
 plt.ylabel("Frecuencia")
 plt.hist(M, bins = 30 )
 plt.show()
-plt.title("Grárafico de frecuencia de N")
+plt.title("Gráfico de frecuencia de N")
 plt.xlabel("N")
 plt.xlim(0.5, 0.9)
 plt.ylabel("Frecuencia")
 plt.hist(N, bins = 30 )
 plt.show()
-plt.title("Grárafico de frecuencia de L")
+plt.title("Gráfico de frecuencia de L")
 plt.xlabel("L")
 plt.xlim(1, 1.5)
 plt.ylabel("Frecuencia")
@@ -749,4 +747,15 @@ plt.ylim(0.00001,0.01)
 plt.xlim(0.1,10)
 plt.grid(True, which ='both')
 plt.plot(m,GS, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
+plt.show()
+
+
+x = LLD
+y = LLD/LLS
+
+plt.scatter(x,y)
+plt.plot((0,200),(2,1))
+plt.grid()
+plt.xlim(0,450)
+plt.ylim(0,2.5)
 plt.show()

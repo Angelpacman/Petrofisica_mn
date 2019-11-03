@@ -109,10 +109,10 @@ y_hist.yaxis.set_tick_params(labelleft=False)
 x_hist.set_yticks([0, 5, 10, 15])
 y_hist.set_xticks([0, 5, 10, 15])
 
-x_hist.set_ylabel('N frequency')
+x_hist.set_ylabel('frecuencia N')
 main_ax.set_xlabel('N')
 main_ax.set_ylabel('M')
-y_hist.set_xlabel('M frequency')
+y_hist.set_xlabel('frecuencia M')
 
 x_hist.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
 y_hist.tick_params(labelcolor='w', top='off', bottom='off', left='off', right='off')
