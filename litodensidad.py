@@ -754,8 +754,26 @@ x = LLD
 y = LLD/LLS
 
 plt.scatter(x,y)
+plt.plot((300,450),(2.5,1.75))
+plt.plot((0,450),(1,1))
 plt.plot((0,200),(2,1))
-plt.grid()
+plt.plot((300,450),(2.5,1.75))
+
+plt.grid(True, which = 'both')
+plt.xlabel('LLD')
+plt.ylabel('LLD / LLS')
+plt.title('Resistividad vs relación Laterlog')
 plt.xlim(0,450)
 plt.ylim(0,2.5)
+plt.show()
+
+plt.plot(LLD,PROF*-1,LLS,PROF*-1)
+plt.show()
+
+
+plt.plot(y,PROF)
+plt.plot((0,0),(4300,4250))
+plt.xlabel('Relacion LLD / LLS')
+plt.ylabel('Profundidad')
+plt.xlim(-1.5,3.5)
 plt.show()
