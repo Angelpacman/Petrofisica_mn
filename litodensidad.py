@@ -813,6 +813,7 @@ datos['FiFracCPR']  = np.around(FiFracCPR,  decimals = 4)
 datos['FImatCPR']   = np.around(FImatCPR,   decimals = 4)
 datos['P']          = np.around(P,          decimals = 4)
 datos['P_1medio']   = np.around(P_1medio,   decimals = 4)
+datos['Pc']         = np.around(Pc,         decimals = 4)
 
 
 Dm = 6*(1-FITR)/SP
@@ -830,7 +831,7 @@ Pc_ = 151.35*(Ik/(FITR*100))**-0.407
 A_ = 2.03
 B_ = 0.9
 log_a = (A_*np.log10(FITR) + np.log10(FR)) / (1+B_*np.log10(FITR))
-
+mOGR = 1.13*log_a
 
 
 datos['Dm']             = np.around(Dm,         decimals = 4)
@@ -843,5 +844,7 @@ datos['SwIRE']          = np.around(SwIRE,      decimals = 4)
 datos['TamBLO']         = np.around(TamBLO,     decimals = 4)
 datos['Pc_']            = np.around(Pc_,        decimals = 4)
 datos['log_a']          = np.around(log_a,      decimals = 4)
+datos['P_1medio']   = np.around(P_1medio,   decimals = 4)
+
 
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
