@@ -609,7 +609,7 @@ datos['m_Evans']= np.around(m_Evans,decimals = 4)
 
 
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
-
+"""
 datos.info()
 
 plt.title("Gráfico de frecuencia de M")
@@ -677,10 +677,10 @@ plt.ylabel("T")
 plt.grid(True, which ='both')
 plt.plot(CoParTAREK,TFrFIT, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
 plt.show()
-
+"""
 
 P = (FITR ** 3)/((1-FITR)**2)
-
+"""
 plt.title("Ik vs P")
 plt.xlabel("P")
 plt.xscale("log")
@@ -748,11 +748,11 @@ plt.xlim(0.1,10)
 plt.grid(True, which ='both')
 plt.plot(m,GS, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
 plt.show()
-
+"""
 
 x = LLD
 y = LLD/LLS
-
+"""
 plt.scatter(x,y)
 plt.plot((300,450),(2.5,1.75))
 plt.plot((0,450),(1,1))
@@ -777,3 +777,71 @@ plt.xlabel('Relacion LLD / LLS')
 plt.ylabel('Profundidad')
 plt.xlim(-1.5,3.5)
 plt.show()
+"""
+#FImatRasmus= 100.0 - (np.sqrt(4.0*((100.0)*(1-0.02))))/(2*(100.0*(1-0.02)))
+#FImatRasmus
+
+
+FRcEvans = 1 * FITR **(-1*m_Evans)
+Err_m_Evans = abs((m - abs(m_Evans))/m) * 100
+datos['FRcEvans']  = np.around(FRcEvans, decimals = 4)
+datos['Err_m_Evans(%)']= np.around(Err_m_Evans, decimals = 4)
+
+
+_Por_ = FITR / ((1-FITR)**2)   #78
+mPivote = 2.0 + 12.5*(1 - (FIPR/FITR))*(FITR - 0.07)
+FRcPivote = 1 * FITR **(-1*m_Pivote)
+Err_m_Pivote = abs((m - abs(m_Pivote))/m) * 100
+
+datos['Por*']           = np.around(_Por_,      decimals = 4)
+datos['m_Pivote']       = np.around(m_Pivote,   decimals = 4)
+datos['FRcPivote']      = np.around(FRcPivote,  decimals = 4)
+datos['Err_m_Pivote(%)']= np.around(Err_m_Pivote, decimals = 4)
+
+
+Laterlog = LLD/LLS
+
+FiFracCPR = 1- ((FR - 1)/FR)**(1/CONECTIVIDAD)
+FImatCPR = FITR - FiFracCPR
+P = LLD*FITR**mPICKETT
+P_1medio = (LLD * FITR**mPICKETT)**0.5
+Pc = 255.86*(Ik/FITR)
+
+
+datos['LLD/LLS']    = np.around(Laterlog,   decimals = 4)
+datos['FiFracCPR']  = np.around(FiFracCPR,  decimals = 4)
+datos['FImatCPR']   = np.around(FImatCPR,   decimals = 4)
+datos['P']          = np.around(P,          decimals = 4)
+datos['P_1medio']   = np.around(P_1medio,   decimals = 4)
+
+
+Dm = 6*(1-FITR)/SP
+FIF_FIELE = FIF / FIELE
+FIEFE_FITR = FIEFE / FITR
+G = 0.887
+n = 1.87
+SwArchie_modif = (G*0.20234/FITR)**(-1/n)
+S_HCS = 1-SwArchie_modif
+FIT_Sw = FIT * SwArchie_modif
+C_ = np.mean(FIT_Sw)
+SwIRE = C_ / FITR
+TamBLO = (1-FIF)**(1/3)
+Pc_ = 151.35*(Ik/(FITR*100))**-0.407
+A_ = 2.03
+B_ = 0.9
+log_a = (A_*np.log10(FITR) + np.log10(FR)) / (1+B_*np.log10(FITR))
+
+
+
+datos['Dm']             = np.around(Dm,         decimals = 4)
+datos['FIF_FIELE']      = np.around(FIF_FIELE,  decimals = 4)
+datos['FIEFE_FITR']     = np.around(FIEFE_FITR, decimals = 4)
+datos['SwArchie_modif'] = np.around(SwArchie_modif,decimals = 4)
+datos['S_HCS']          = np.around(S_HCS,      decimals = 4)
+datos['FIT_Sw']         = np.around(FIT_Sw,     decimals = 4)
+datos['SwIRE']          = np.around(SwIRE,      decimals = 4)
+datos['TamBLO']         = np.around(TamBLO,     decimals = 4)
+datos['Pc_']            = np.around(Pc_,        decimals = 4)
+datos['log_a']          = np.around(log_a,      decimals = 4)
+
+datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
