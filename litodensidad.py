@@ -789,7 +789,7 @@ datos['Err_m_Evans(%)']= np.around(Err_m_Evans, decimals = 4)
 
 
 _Por_ = FITR / ((1-FITR)**2)   #78
-mPivote = 2.0 + 12.5*(1 - (FIPR/FITR))*(FITR - 0.07)
+m_Pivote = 2.0 + 12.5*(1 - (FIPR/FITR))*(FITR - 0.07)
 FRcPivote = 1 * FITR **(-1*m_Pivote)
 Err_m_Pivote = abs((m - abs(m_Pivote))/m) * 100
 
@@ -844,7 +844,7 @@ datos['SwIRE']          = np.around(SwIRE,      decimals = 4)
 datos['TamBLO']         = np.around(TamBLO,     decimals = 4)
 datos['Pc_']            = np.around(Pc_,        decimals = 4)
 datos['log_a']          = np.around(log_a,      decimals = 4)
-datos['P_1medio']   = np.around(P_1medio,   decimals = 4)
+datos['mOGR']           = np.around(mOGR,       decimals = 4)
 
 
 datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
