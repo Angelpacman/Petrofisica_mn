@@ -59,7 +59,7 @@ v_x2=[bx,bx]
 v_y2=[by,1.2]
 v_x3=[cx,cx]
 v_y3=[cy,1.2]
-"""
+
 #figura
 plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
@@ -73,7 +73,7 @@ plt.xlabel('N')
 plt.ylabel('M')
 plt.title('M vs N')
 plt.show()
-"""
+
 
 #librerias para trabajar con el poligono
 from shapely.geometry import Point
@@ -317,8 +317,8 @@ FIENT = FITR - FIF
 # datos['FIF(%)']  = np.around(FIF*100, decimals = 4)
 # datos['FIENT(%)']  = np.around(FIENT*100, decimals = 4)
 
-datos['m']  = np.around(m, decimals = 4)
-datos['FIF']  = np.around(FIF, decimals = 4)
+datos['m']      = np.around(m, decimals = 4)
+datos['FIF']    = np.around(FIF, decimals = 4)
 datos['FIENT']  = np.around(FIENT, decimals = 4)
 
 #datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
@@ -608,8 +608,8 @@ datos['IZE']    = np.around(IZE,    decimals = 4)
 datos['m_Evans']= np.around(m_Evans,decimals = 4)
 
 
-datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
-"""
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+
 datos.info()
 
 plt.title("Gráfico de frecuencia de M")
@@ -677,10 +677,10 @@ plt.ylabel("T")
 plt.grid(True, which ='both')
 plt.plot(CoParTAREK,TFrFIT, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
 plt.show()
-"""
+
 
 P = (FITR ** 3)/((1-FITR)**2)
-"""
+
 plt.title("Ik vs P")
 plt.xlabel("P")
 plt.xscale("log")
@@ -748,11 +748,11 @@ plt.xlim(0.1,10)
 plt.grid(True, which ='both')
 plt.plot(m,GS, marker = 'o', markersize = '1.5', linestyle='', color = 'r')
 plt.show()
-"""
+
 
 x = LLD
 y = LLD/LLS
-"""
+
 plt.scatter(x,y)
 plt.plot((300,450),(2.5,1.75))
 plt.plot((0,450),(1,1))
@@ -777,7 +777,7 @@ plt.xlabel('Relacion LLD / LLS')
 plt.ylabel('Profundidad')
 plt.xlim(-1.5,3.5)
 plt.show()
-"""
+
 #FImatRasmus= 100.0 - (np.sqrt(4.0*((100.0)*(1-0.02))))/(2*(100.0*(1-0.02)))
 #FImatRasmus
 
