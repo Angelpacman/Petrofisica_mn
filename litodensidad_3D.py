@@ -75,7 +75,8 @@ ax.set_xlabel('N')
 ax.set_ylabel('M')
 ax.scatter(N, M, s=10, c = col, marker='o')
 p2d = ax.scatter(N, M, s=10, c = col, marker='o')
-plt.colorbar(p2d)
+c_bar = plt.colorbar(p2d)
+c_bar.set_label('metros')
 
 
 #aqui va la figura pero en proyeccion 3D de M vs N
@@ -86,8 +87,8 @@ p3d = ay.scatter(N, M, -1*PROF, s=40, c=col, marker='.')
 ay.set_xlabel('N')
 ay.set_ylabel('M')
 ay.set_zlabel('Profundidad')
-#plt.colorbar(p3d)
-##plt.show()
+colorbar = plt.colorbar(p3d)
+colorbar.set_label('metros')
 
 
 fig = plt.figure()
@@ -98,7 +99,8 @@ p3d = az.scatter(N, M, L, s=40, c=col, marker='.')
 az.set_xlabel('N')
 az.set_ylabel('M')
 az.set_zlabel('L')
-#plt.colorbar(p3d)
+cb = plt.colorbar(p3d)
+cb.set_label('metros')
 plt.show()
 
 
@@ -115,7 +117,8 @@ ax.set_xlabel('M')
 ax.set_ylabel('L')
 ax.scatter(M, L, s=10, c = col, marker='o')
 #p2d = ax.scatter(M, L, s=10, c = col, marker='o')
-plt.colorbar(p2d)
+color_b = plt.colorbar(p2d)
+color_b.set_label('metros')
 
 ##NL
 P_N = [0.5241,0.5848, 0.6273, 0.5241]
@@ -130,7 +133,8 @@ ax.set_xlabel('N')
 ax.set_ylabel('L')
 ax.scatter(N, L, s=10, c = col, marker='o')
 #p2d = ax.scatter(M, L, s=10, c = coli, marker='o')
-plt.colorbar(p2d)
+color_b = plt.colorbar(p2d)
+color_b.set_label('metros')
 plt.show()
 
 
