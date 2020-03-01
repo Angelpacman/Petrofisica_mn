@@ -4,7 +4,7 @@ import pandas as pd
 from mpl_toolkits.mplot3d import axes3d
 
 datos = pd.read_excel('../RESENDIZ AVILES(pasado).xlsx')
-datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
+#datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
 # datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
 # datos['L'] = 0.01 * (189 - datos['DT'])/(1-datos['NPHI'])
 M = np.array( 0.01 * (189-datos['DT'])/(datos['RHOB'] - 1) )
@@ -30,7 +30,7 @@ NPHI = np.array(datos['NPHI'])
 
 
 # Create plot 3D Plot
-fig = plt.figure()
+fig = plt.figure(figsize=(10,12))
 #Aqui precisamos de un arreglo que tenga el mismo tamaño de M y N (que en nuestro caso es 400)
 #col = np.arange(np.array(len(PROF)))
 #col = np.linspace(PROF[0],PROF[399],400)
