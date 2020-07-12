@@ -66,9 +66,9 @@ v_x3=[c_x,c_x]
 v_y3=[c_y,1]
 
 #pares de arreglos x,y para graficar las lineas de la grafica
-tirang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
-tirang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
-tirang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
 
 
 triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
@@ -97,7 +97,12 @@ x_hist = fig.add_subplot(grid[0, :-1], yticklabels=[], sharex=main_ax)
 
 # scatter points on the main axes
 main_ax.plot(N, M, marker='o', linestyle='', markersize=4, alpha=0.3, color ='orange')
-main_ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+#main_ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+
+# main_ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+main_ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+main_ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+#main_ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3) las lineas salen hacia arriba, :(
 main_ax.grid()
 
 

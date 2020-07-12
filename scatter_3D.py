@@ -66,9 +66,9 @@ v_y2=[b_y,1]
 v_x3=[c_x,c_x]
 v_y3=[c_y,1]
 
-tirang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
-tirang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
-tirang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
 
 
 triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
@@ -88,7 +88,7 @@ p3d=ax3D.scatter(N, M, -1*PROF, s=100, c=col, marker='.')
 
 #Proyeccion de lineas de la superficie dol cal sil arc
 ax3D.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=-1*max(PROF), zdir='z', label='dol-sil-arc')
-ax3D.plot(tirang_dol_cal_sil_A,tirang_dol_cal_sil_B, zs=-1*max(PROF), zdir='z', label='dol-cal-sil')
+ax3D.plot(triang_dol_cal_sil_A,triang_dol_cal_sil_B, zs=-1*max(PROF), zdir='z', label='dol-cal-sil')
 ax3D.legend()
 ax3D.set_zlim(min(-1*PROF), max(-1*PROF))
 
