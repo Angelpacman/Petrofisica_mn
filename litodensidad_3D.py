@@ -33,19 +33,21 @@ def param_lito(mineral):
     L = 0.01 * (189 - mineral[0])/(1 - mineral[2])
     return    np.array([N,M,L])
 
-param_lito(DOLOMIA)
-param_lito(CALIZA)
-param_lito(SILICE)
-param_lito(ARCILLA)
-
 ax = param_lito(DOLOMIA)[0]
 ay = param_lito(DOLOMIA)[1]
+az = param_lito(DOLOMIA)[2]
+
 bx = param_lito(CALIZA)[0]
 by = param_lito(CALIZA)[1]
+bz = param_lito(CALIZA)[2]
+
 cx = param_lito(SILICE)[0]
 cy = param_lito(SILICE)[1]
+cz = param_lito(SILICE)[2]
+
 dx = param_lito(ARCILLA)[0]
 dy = param_lito(ARCILLA)[1]
+dz = param_lito(ARCILLA)[2]
 
 P_inicial=[ax,bx,cx,dx,ax]
 P_final  =[ay,by,cy,dy,ay]
@@ -57,7 +59,14 @@ v_x2=[bx,bx]
 v_y2=[by,1]
 v_x3=[cx,cx]
 v_y3=[cy,1]
+tirang_dol_cal_sil_A = [ax,bx,cx,ax]
+tirang_dol_cal_sil_B = [ay,by,cy,ay]
+tirang_dol_cal_sil_C = [az,bz,cz,az]
 
+
+triang_dol_sil_arc_A = [ax,cx,dx,ax]
+triang_dol_sil_arc_B = [ay,cy,dy,ay]
+triang_dol_sil_arc_C = [az,cz,dz,az]
 
 
 PROF= np.array(datos['PROF'])  #*-1
@@ -109,12 +118,22 @@ from matplotlib import style
 verts1 = [list((dol, cal, sil))]
 verts2 = [list((dol, sil, arc))]
 # 2. create 3d polygons and specify parameters
-srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#8e3AAA')
+srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#ff5233')
 srf2 = Poly3DCollection(verts2, alpha=.25, facecolor='#4c7093')
 # 3. add polygon to the figure (current axes)
 plt.gca().add_collection3d(srf1)
 plt.gca().add_collection3d(srf2)
+#Proyeccion de lineas de la superficie dol cal sil arc
+az.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=min(L), zdir='z', label='dol-sil-arc')
+az.plot(tirang_dol_cal_sil_A,tirang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
+#az.plot(tirang_dol_cal_sil_B,tirang_dol_cal_sil_C, zs=min(N), zdir='x',)
+az.legend()
+az.set_zlim(min(L), max(L))
 """"""
+# az.set_xlim(min(N), max(N))
+# az.set_ylim(min(M), max(M))
+# az.set_zlim(min(L), max(L))
+
 az.set_xlabel('N')
 az.set_ylabel('M')
 az.set_zlabel('L')

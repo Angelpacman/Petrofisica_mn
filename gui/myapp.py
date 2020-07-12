@@ -23,12 +23,19 @@ ARCILLA = np.array([120,    2.35,   0.33])
 
 ax = param_lito(DOLOMIA)[0]
 ay = param_lito(DOLOMIA)[1]
+az = param_lito(DOLOMIA)[2]
+
 bx = param_lito(CALIZA)[0]
 by = param_lito(CALIZA)[1]
+bz = param_lito(CALIZA)[2]
+
 cx = param_lito(SILICE)[0]
 cy = param_lito(SILICE)[1]
+cz = param_lito(SILICE)[2]
+
 dx = param_lito(ARCILLA)[0]
 dy = param_lito(ARCILLA)[1]
+dz = param_lito(ARCILLA)[2]
 
 P_inicial=[ax,bx,cx,dx,ax]
 P_final  =[ay,by,cy,dy,ay]
@@ -40,6 +47,14 @@ v_x2=[bx,bx]
 v_y2=[by,1]
 v_x3=[cx,cx]
 v_y3=[cy,1]
+
+tirang_dol_cal_sil_A = [ax,bx,cx,ax]
+tirang_dol_cal_sil_B = [ay,by,cy,ay]
+tirang_dol_cal_sil_C = [az,bz,cz,az]
+
+triang_dol_sil_arc_A = [ax,cx,dx,ax]
+triang_dol_sil_arc_B = [ay,cy,dy,ay]
+triang_dol_sil_arc_C = [az,cz,dz,az]
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -118,6 +133,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         fig = plt.figure()
         ay = fig.add_subplot(111, projection='3d')
         p3d = ay.scatter(N, M, -1*PROF, s=40, c=col, marker='.')
+        ay.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=-1*max(PROF), zdir='z', label='dol-sil-arc')
+        ay.plot(tirang_dol_cal_sil_A,tirang_dol_cal_sil_B, zs=-1*max(PROF), zdir='z', label='dol-cal-sil')
+        ay.legend()
+        ay.set_zlim(min(-1*PROF), max(-1*PROF))
         ay.set_xlabel('N')
         ay.set_ylabel('M')
         ay.set_zlabel('Profundidad')
@@ -144,11 +163,16 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         verts1 = [list((dol, cal, sil))]
         verts2 = [list((dol, sil, arc))]
         # 2. create 3d polygons and specify parameters
-        srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#8e3AAA')
+        srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#ff5233')
         srf2 = Poly3DCollection(verts2, alpha=.25, facecolor='#4c7093')
         # 3. add polygon to the figure (current axes)
         plt.gca().add_collection3d(srf1)
         plt.gca().add_collection3d(srf2)
+        az.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=min(L), zdir='z', label='dol-sil-arc')
+        az.plot(tirang_dol_cal_sil_A,tirang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
+        #az.plot(tirang_dol_cal_sil_B,tirang_dol_cal_sil_C, zs=min(N), zdir='x',)
+        az.legend()
+        az.set_zlim(min(L), max(L))
         """"""
         az.set_xlabel('N')
         az.set_ylabel('M')
