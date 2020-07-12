@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="poli">
+    <file>ipn.png</file>
+  </qresource>
+</RCC>

@@ -22,30 +22,32 @@ datos['L'] = np.around(L, decimals = 4)
 
 #definicion de los puntos que van a ser los contenedores del poligono
 
-DOLOMIA = np.array([43.5, 2.87, 0.02])
-CALIZA  = np.array([47.6, 2.71, 0.00])
-SILICE  = np.array([55.5, 2.65, -0.035])
-ARCILLA = np.array([120,  2.35, 0.33])
+DOLOMIA = np.array([43.5,   2.87,   0.02])
+CALIZA  = np.array([47.6,   2.71,   0.00])
+SILICE  = np.array([55.5,   2.65,  -0.035])
+ARCILLA = np.array([120,    2.35,   0.33])
 
 def param_lito(mineral):
     M = 0.01 * (189-mineral[0])/(mineral[1] - 1)
     N = (1 - mineral[2]) / (mineral[1] - 1)
     L = 0.01 * (189 - mineral[0])/(1 - mineral[2])
-    return    np.array([M,N,L])
+    return    np.array([N,M,L])
 
-param_lito(DOLOMIA)
-param_lito(CALIZA)
-param_lito(SILICE)
-param_lito(ARCILLA)
+ax = param_lito(DOLOMIA)[0]
+ay = param_lito(DOLOMIA)[1]
+az = param_lito(DOLOMIA)[2]
 
-ax = param_lito(DOLOMIA)[1]
-ay = param_lito(DOLOMIA)[0]
-bx = param_lito(CALIZA)[1]
-by = param_lito(CALIZA)[0]
-cx = param_lito(SILICE)[1]
-cy = param_lito(SILICE)[0]
-dx = param_lito(ARCILLA)[1]
-dy = param_lito(ARCILLA)[0]
+bx = param_lito(CALIZA)[0]
+by = param_lito(CALIZA)[1]
+bz = param_lito(CALIZA)[2]
+
+cx = param_lito(SILICE)[0]
+cy = param_lito(SILICE)[1]
+cz = param_lito(SILICE)[2]
+
+dx = param_lito(ARCILLA)[0]
+dy = param_lito(ARCILLA)[1]
+dz = param_lito(ARCILLA)[2]
 
 P_inicial=[ax,bx,cx,dx,ax]
 P_final  =[ay,by,cy,dy,ay]
@@ -57,7 +59,14 @@ v_x2=[bx,bx]
 v_y2=[by,1]
 v_x3=[cx,cx]
 v_y3=[cy,1]
+tirang_dol_cal_sil_A = [ax,bx,cx,ax]
+tirang_dol_cal_sil_B = [ay,by,cy,ay]
+tirang_dol_cal_sil_C = [az,bz,cz,az]
 
+
+triang_dol_sil_arc_A = [ax,cx,dx,ax]
+triang_dol_sil_arc_B = [ay,cy,dy,ay]
+triang_dol_sil_arc_C = [az,cz,dz,az]
 
 
 PROF= np.array(datos['PROF'])  #*-1
@@ -75,7 +84,8 @@ ax.set_xlabel('N')
 ax.set_ylabel('M')
 ax.scatter(N, M, s=10, c = col, marker='o')
 p2d = ax.scatter(N, M, s=10, c = col, marker='o')
-plt.colorbar(p2d)
+c_bar = plt.colorbar(p2d)
+c_bar.set_label('metros')
 
 
 #aqui va la figura pero en proyeccion 3D de M vs N
@@ -86,8 +96,8 @@ p3d = ay.scatter(N, M, -1*PROF, s=40, c=col, marker='.')
 ay.set_xlabel('N')
 ay.set_ylabel('M')
 ay.set_zlabel('Profundidad')
-#plt.colorbar(p3d)
-##plt.show()
+colorbar = plt.colorbar(p3d)
+colorbar.set_label('metros')
 
 
 fig = plt.figure()
@@ -95,10 +105,40 @@ az = fig.add_subplot(111, projection='3d')
 colL = np.linspace(L[0],L[-1],400)
 p3d = az.scatter(N, M, L, s=40, c=col, marker='.')
 #ay.invert_zaxis()
+"""Este bloque agregado a la grafica 3D MNL dibuja la superficie de los vertices
+dol, cal, sil, arc."""
+dol=param_lito(DOLOMIA)
+cal=param_lito(CALIZA)
+sil=param_lito(SILICE)
+arc=param_lito(ARCILLA)
+
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # appropriate import to draw 3d polygons
+from matplotlib import style
+# 1. Add vertix
+verts1 = [list((dol, cal, sil))]
+verts2 = [list((dol, sil, arc))]
+# 2. create 3d polygons and specify parameters
+srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#ff5233')
+srf2 = Poly3DCollection(verts2, alpha=.25, facecolor='#4c7093')
+# 3. add polygon to the figure (current axes)
+plt.gca().add_collection3d(srf1)
+plt.gca().add_collection3d(srf2)
+#Proyeccion de lineas de la superficie dol cal sil arc
+az.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=min(L), zdir='z', label='dol-sil-arc')
+az.plot(tirang_dol_cal_sil_A,tirang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
+#az.plot(tirang_dol_cal_sil_B,tirang_dol_cal_sil_C, zs=min(N), zdir='x',)
+az.legend()
+az.set_zlim(min(L), max(L))
+""""""
+# az.set_xlim(min(N), max(N))
+# az.set_ylim(min(M), max(M))
+# az.set_zlim(min(L), max(L))
+
 az.set_xlabel('N')
 az.set_ylabel('M')
 az.set_zlabel('L')
-#plt.colorbar(p3d)
+cb = plt.colorbar(p3d)
+cb.set_label('metros')
 plt.show()
 
 
@@ -115,7 +155,8 @@ ax.set_xlabel('M')
 ax.set_ylabel('L')
 ax.scatter(M, L, s=10, c = col, marker='o')
 #p2d = ax.scatter(M, L, s=10, c = col, marker='o')
-plt.colorbar(p2d)
+color_b = plt.colorbar(p2d)
+color_b.set_label('metros')
 
 ##NL
 P_N = [0.5241,0.5848, 0.6273, 0.5241]
@@ -130,7 +171,8 @@ ax.set_xlabel('N')
 ax.set_ylabel('L')
 ax.scatter(N, L, s=10, c = col, marker='o')
 #p2d = ax.scatter(M, L, s=10, c = coli, marker='o')
-plt.colorbar(p2d)
+color_b = plt.colorbar(p2d)
+color_b.set_label('metros')
 plt.show()
 
 

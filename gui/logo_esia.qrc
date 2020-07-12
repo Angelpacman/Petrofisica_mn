@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="esia">
+    <file>esia.png</file>
+  </qresource>
+</RCC>
