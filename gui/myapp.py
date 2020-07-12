@@ -21,25 +21,42 @@ CALIZA  = np.array([47.6,   2.71,   0.00])
 SILICE  = np.array([55.5,   2.65,  -0.035])
 ARCILLA = np.array([120,    2.35,   0.33])
 
-ax = param_lito(DOLOMIA)[0]
-ay = param_lito(DOLOMIA)[1]
-bx = param_lito(CALIZA)[0]
-by = param_lito(CALIZA)[1]
-cx = param_lito(SILICE)[0]
-cy = param_lito(SILICE)[1]
-dx = param_lito(ARCILLA)[0]
-dy = param_lito(ARCILLA)[1]
+a_x = param_lito(DOLOMIA)[0]
+a_y = param_lito(DOLOMIA)[1]
+a_z = param_lito(DOLOMIA)[2]
 
-P_inicial=[ax,bx,cx,dx,ax]
-P_final  =[ay,by,cy,dy,ay]
-P_M1=[ax,cx]
-P_M2=[ay,cy]
-v_x1=[ax,ax]
-v_y1=[ay,1]
-v_x2=[bx,bx]
-v_y2=[by,1]
-v_x3=[cx,cx]
-v_y3=[cy,1]
+b_x = param_lito(CALIZA)[0]
+b_y = param_lito(CALIZA)[1]
+b_z = param_lito(CALIZA)[2]
+
+c_x = param_lito(SILICE)[0]
+c_y = param_lito(SILICE)[1]
+c_z = param_lito(SILICE)[2]
+
+d_x = param_lito(ARCILLA)[0]
+d_y = param_lito(ARCILLA)[1]
+d_z = param_lito(ARCILLA)[2]
+
+P_inicial=[a_x, b_x,    c_x,    d_x,    a_x]
+P_final  =[a_y, b_y,    c_y,    d_y,    a_y]
+P_M1=[a_x,c_x]
+P_M2=[a_y,c_y]
+v_x1=[a_x,a_x]
+v_y1=[a_y,1]
+v_x2=[b_x,b_x]
+v_y2=[b_y,1]
+v_x3=[c_x,c_x]
+v_y3=[c_y,1]
+
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+
+
+triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
+triang_dol_sil_arc_B = [a_y,    c_y,    d_y,    a_y]
+triang_dol_sil_arc_C = [a_z,    c_z,    d_z,    a_z]
+
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -88,7 +105,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #aqui va figura en 2D
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+        # ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+        ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+        ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+        ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
         ax.grid()
         ax.set_xlabel('N')
         ax.set_ylabel('M')
@@ -118,6 +138,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         fig = plt.figure()
         ay = fig.add_subplot(111, projection='3d')
         p3d = ay.scatter(N, M, -1*PROF, s=40, c=col, marker='.')
+        ay.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=-1*max(PROF), zdir='z', label='dol-sil-arc')
+        ay.plot(triang_dol_cal_sil_A,triang_dol_cal_sil_B, zs=-1*max(PROF), zdir='z', label='dol-cal-sil')
+        ay.legend()
+        ay.set_zlim(min(-1*PROF), max(-1*PROF))
         ay.set_xlabel('N')
         ay.set_ylabel('M')
         ay.set_zlabel('Profundidad')
@@ -144,11 +168,16 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         verts1 = [list((dol, cal, sil))]
         verts2 = [list((dol, sil, arc))]
         # 2. create 3d polygons and specify parameters
-        srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#8e3AAA')
+        srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#ff5233')
         srf2 = Poly3DCollection(verts2, alpha=.25, facecolor='#4c7093')
         # 3. add polygon to the figure (current axes)
         plt.gca().add_collection3d(srf1)
         plt.gca().add_collection3d(srf2)
+        az.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=min(L), zdir='z', label='dol-sil-arc')
+        az.plot(triang_dol_cal_sil_A,triang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
+        #az.plot(triang_dol_cal_sil_B,triang_dol_cal_sil_C, zs=min(N), zdir='x',)
+        az.legend()
+        az.set_zlim(min(L), max(L))
         """"""
         az.set_xlabel('N')
         az.set_ylabel('M')
@@ -178,7 +207,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         #aqui va figura en 2D
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+        # ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+        ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+        ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+        #ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3) lineas hacia arriba que no sirven :(
         ax.grid()
         ax.set_xlabel('N')
         ax.set_ylabel('M')
@@ -191,11 +223,14 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
         ##ML
-        P_M  =[0.7781,0.8269,0.8091,0.7781]
-        P_L = [1.4847, 1.414, 1.2898, 1.4847]
+        P_M  =  [0.7781,    0.8269, 0.8091,    0.7781]
+        P_L  =  [1.4847,    1.414,  1.2898,    1.4847]
+        P__M =  [a_y,    c_y,     d_y,     a_y]
+        P__L =  [a_z,    c_z,     d_z,     a_z]
         fig = plt.figure()
         ay = fig.add_subplot(111)
         #ay.title("Grafico M vs L")
+        ay.plot(P__M,P__L)
         ay.plot(P_M,P_L)
         ay.grid()
         ay.set_xlabel('M')
@@ -207,12 +242,15 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         ay.set_title('Diagrama M vs L')
 
         ##NL
-        P_N = [0.5241,0.5848, 0.6273, 0.5241]
-        P_L = [1.4847, 1.414, 1.2898, 1.4847]
+        P_N  = [0.5241,0.5848, 0.6273, 0.5241]
+        P_L  = [1.4847, 1.414, 1.2898, 1.4847]
+        P__N = [a_x,    c_x,     d_x,     a_x]
+        P__L = [a_z,    c_z,     d_z,     a_z]
         coli = np.linspace(1,99,400)
         fig = plt.figure()
         az = fig.add_subplot(111)
         #az.title("Grafico N vs L")
+        az.plot(P__N,P__L)
         az.plot(P_N,P_L)
         az.grid()
         az.set_xlabel('N')

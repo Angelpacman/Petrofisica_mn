@@ -33,31 +33,41 @@ def param_lito(mineral):
     L = 0.01 * (189 - mineral[0])/(1 - mineral[2])
     return    np.array([N,M,L])
 
-param_lito(DOLOMIA)
-param_lito(CALIZA)
-param_lito(SILICE)
-param_lito(ARCILLA)
+a_x = param_lito(DOLOMIA)[0]
+a_y = param_lito(DOLOMIA)[1]
+a_z = param_lito(DOLOMIA)[2]
 
-ax = param_lito(DOLOMIA)[0]
-ay = param_lito(DOLOMIA)[1]
-bx = param_lito(CALIZA)[0]
-by = param_lito(CALIZA)[1]
-cx = param_lito(SILICE)[0]
-cy = param_lito(SILICE)[1]
-dx = param_lito(ARCILLA)[0]
-dy = param_lito(ARCILLA)[1]
+b_x = param_lito(CALIZA)[0]
+b_y = param_lito(CALIZA)[1]
+b_z = param_lito(CALIZA)[2]
 
-P_inicial=[ax,bx,cx,dx,ax]
-P_final  =[ay,by,cy,dy,ay]
-P_M1=[ax,cx]
-P_M2=[ay,cy]
-v_x1=[ax,ax]
-v_y1=[ay,1]
-v_x2=[bx,bx]
-v_y2=[by,1]
-v_x3=[cx,cx]
-v_y3=[cy,1]
+c_x = param_lito(SILICE)[0]
+c_y = param_lito(SILICE)[1]
+c_z = param_lito(SILICE)[2]
 
+d_x = param_lito(ARCILLA)[0]
+d_y = param_lito(ARCILLA)[1]
+d_z = param_lito(ARCILLA)[2]
+
+P_inicial=[a_x, b_x,    c_x,    d_x,    a_x]
+P_final  =[a_y, b_y,    c_y,    d_y,    a_y]
+P_M1=[a_x,c_x]
+P_M2=[a_y,c_y]
+v_x1=[a_x,a_x]
+v_y1=[a_y,1]
+v_x2=[b_x,b_x]
+v_y2=[b_y,1]
+v_x3=[c_x,c_x]
+v_y3=[c_y,1]
+
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+
+
+triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
+triang_dol_sil_arc_B = [a_y,    c_y,    d_y,    a_y]
+triang_dol_sil_arc_C = [a_z,    c_z,    d_z,    a_z]
 
 
 PROF= np.array(datos['PROF'])  #*-1
@@ -69,7 +79,10 @@ col = np.linspace(-1*PROF[0],-1*PROF[-1],400)
 #aqui va figura en 2D
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+# ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 ax.grid()
 ax.set_xlabel('N')
 ax.set_ylabel('M')
@@ -92,16 +105,16 @@ colorbar.set_label('metros')
 
 
 fig = plt.figure()
-az = fig.add_subplot(111, projection='3d')
-colL = np.linspace(L[0],L[-1],400)
+az  = fig.add_subplot(111, projection='3d')
+colL= np.linspace(L[0],L[-1],400)
 p3d = az.scatter(N, M, L, s=40, c=col, marker='.')
 #ay.invert_zaxis()
 """Este bloque agregado a la grafica 3D MNL dibuja la superficie de los vertices
 dol, cal, sil, arc."""
-dol=param_lito(DOLOMIA)
-cal=param_lito(CALIZA)
-sil=param_lito(SILICE)
-arc=param_lito(ARCILLA)
+dol = param_lito(DOLOMIA)
+cal = param_lito(CALIZA)
+sil = param_lito(SILICE)
+arc = param_lito(ARCILLA)
 
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # appropriate import to draw 3d polygons
 from matplotlib import style
@@ -109,12 +122,22 @@ from matplotlib import style
 verts1 = [list((dol, cal, sil))]
 verts2 = [list((dol, sil, arc))]
 # 2. create 3d polygons and specify parameters
-srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#8e3AAA')
+srf1 = Poly3DCollection(verts1, alpha=.25, facecolor='#ff5233')
 srf2 = Poly3DCollection(verts2, alpha=.25, facecolor='#4c7093')
 # 3. add polygon to the figure (current axes)
 plt.gca().add_collection3d(srf1)
 plt.gca().add_collection3d(srf2)
+#Proyeccion de lineas de la superficie dol cal sil arc
+az.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=min(L), zdir='z', label='dol-sil-arc')
+az.plot(triang_dol_cal_sil_A,triang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
+#az.plot(tirang_dol_cal_sil_B,tirang_dol_cal_sil_C, zs=min(N), zdir='x',)
+az.legend()
+az.set_zlim(min(L), max(L))
 """"""
+# az.set_xlim(min(N), max(N))
+# az.set_ylim(min(M), max(M))
+# az.set_zlim(min(L), max(L))
+
 az.set_xlabel('N')
 az.set_ylabel('M')
 az.set_zlabel('L')
@@ -125,11 +148,15 @@ plt.show()
 
 
 ##ML
-P_M  =[0.7781,0.8269,0.8091,0.7781]
-P_L = [1.4847, 1.414, 1.2898, 1.4847]
+P_M  =  [0.7781,    0.8269, 0.8091,    0.7781]
+P_L  =  [1.4847,    1.414,  1.2898,    1.4847]
+P__M =  [a_y,    c_y,     d_y,     a_y]
+P__L =  [a_z,    c_z,     d_z,     a_z]
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
 # ax.title("Grafico M vs L")
+ax.plot(P__M, P__L)
 ax.plot(P_M,P_L)
 ax.grid()
 ax.set_xlabel('M')
@@ -140,12 +167,16 @@ color_b = plt.colorbar(p2d)
 color_b.set_label('metros')
 
 ##NL
-P_N = [0.5241,0.5848, 0.6273, 0.5241]
-P_L = [1.4847, 1.414, 1.2898, 1.4847]
+P_N  = [0.5241,0.5848, 0.6273, 0.5241]
+P_L  = [1.4847, 1.414, 1.2898, 1.4847]
+P__N = [a_x,    c_x,     d_x,     a_x]
+P__L = [a_z,    c_z,     d_z,     a_z]
+
 coli = np.linspace(1,99,400)
 fig = plt.figure()
 ax = fig.add_subplot(111)
 # ax.title("Grafico N vs L")
+ax.plot(P__N,P__L)
 ax.plot(P_N,P_L)
 ax.grid()
 ax.set_xlabel('N')

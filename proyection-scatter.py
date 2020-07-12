@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D # <--- This is important for 3d plotting
+import pandas as pd
+from mpl_toolkits.mplot3d import Axes3D # <-- Esto es importante para graficar en 3D
 
 fig = plt.figure()
 ax = fig.gca(projection='3d')
