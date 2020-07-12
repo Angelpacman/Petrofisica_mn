@@ -26,10 +26,10 @@ datos['L'] = np.around(L, decimals = 4)
 
 #pares de puntos para graficar el triangulo y las lineas de porosidad primaria
 #Arreglos que contienen DT, RHOB y NPHI de cada mineral
-DOLOMIA = np.array([43.5, 2.87, 0.02])
-CALIZA  = np.array([47.6, 2.71, 0.00])
-SILICE  = np.array([55.5, 2.65, -0.035])
-ARCILLA = np.array([120,  2.35, 0.33])
+DOLOMIA = np.array([43.5,   2.87,   0.02])
+CALIZA  = np.array([47.6,   2.71,   0.00])
+SILICE  = np.array([55.5,   2.65,  -0.035])
+ARCILLA = np.array([120,    2.35,   0.33])
 
 #funcion para calcular parametros
 def param_lito(mineral):
@@ -38,31 +38,43 @@ def param_lito(mineral):
     L = 0.01 * (189 - mineral[0])/(1 - mineral[2])
     return    np.array([M,N,L])
 
-param_lito(DOLOMIA)
-param_lito(CALIZA)
-param_lito(SILICE)
-param_lito(ARCILLA)
+a_x = param_lito(DOLOMIA)[0]
+a_y = param_lito(DOLOMIA)[1]
+a_z = param_lito(DOLOMIA)[2]
 
-ax = param_lito(DOLOMIA)[1]
-ay = param_lito(DOLOMIA)[0]
-bx = param_lito(CALIZA)[1]
-by = param_lito(CALIZA)[0]
-cx = param_lito(SILICE)[1]
-cy = param_lito(SILICE)[0]
-dx = param_lito(ARCILLA)[1]
-dy = param_lito(ARCILLA)[0]
+b_x = param_lito(CALIZA)[0]
+b_y = param_lito(CALIZA)[1]
+b_z = param_lito(CALIZA)[2]
+
+c_x = param_lito(SILICE)[0]
+c_y = param_lito(SILICE)[1]
+c_z = param_lito(SILICE)[2]
+
+d_x = param_lito(ARCILLA)[0]
+d_y = param_lito(ARCILLA)[1]
+d_z = param_lito(ARCILLA)[2]
+
+P_inicial=[a_x, b_x,    c_x,    d_x,    a_x]
+P_final  =[a_y, b_y,    c_y,    d_y,    a_y]
+P_M1=[a_x,c_x]
+P_M2=[a_y,c_y]
+v_x1=[a_x,a_x]
+v_y1=[a_y,1]
+v_x2=[b_x,b_x]
+v_y2=[b_y,1]
+v_x3=[c_x,c_x]
+v_y3=[c_y,1]
 
 #pares de arreglos x,y para graficar las lineas de la grafica
-P_inicial=[ax,bx,cx,dx,ax]
-P_final  =[ay,by,cy,dy,ay]
-P_M1=[ax,cx]
-P_M2=[ay,cy]
-v_x1=[ax,ax]
-v_y1=[ay,1]
-v_x2=[bx,bx]
-v_y2=[by,1]
-v_x3=[cx,cx]
-v_y3=[cy,1]
+tirang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+tirang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+tirang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+
+
+triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
+triang_dol_sil_arc_B = [a_y,    c_y,    d_y,    a_y]
+triang_dol_sil_arc_C = [a_z,    c_z,    d_z,    a_z]
+
 
 """Aqui hemos de convertir las colimnas del dataframe que salio de pandas para transformarlas en
 variables que se pueden manipular como arreglos"""
