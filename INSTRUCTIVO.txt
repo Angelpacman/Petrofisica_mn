@@ -5,8 +5,63 @@ el programa litodensidad_3D.py pretende graficar 3 ejes M, N y L.
 siendo el el eje Z
 
 para correr el programa es necesario instalar python junto con las 
-librerias de: numpy, matplotlib y pandas.
+librerias de: numpy, matplotlib, pandas, shapely, scipy.
 estas librerias se instalan de manera automatica si se instala python 
 desde la pagina de anaconda: https://www.anaconda.com/distribution/#download-section
+adicionalmente desde anaconda se debe instalar las librerias: "shapely" y "scipy"
+
+
+existe otra forma de instalar python numerico y para ello es necesario bajar python 3.6
+de su pagina oficial. 
+https://www.python.org/downloads/
+
+Una vez descargado e instalado python se instalan 
+las librerias de python necesarias:
+numpy, matplotlib, pandas, shapely, scipy
+
+si la variable de entorno de python está declarada (instalada) de manera global
+se puede abrir una terminal y escribir los sigientes comandos para 
+poder instalar los requerimientos:
+
+pip install numpy
+pip install pandas
+pip install matplotlib
+pip install Shapely                (cuidado, Shapely va con S mayuscula en algunos casos)
+pip install scipy
+
+
+CONSIDERACIONES:
+este programa recibe como variables de entrada a un archivo .csv de nombre: eval_petro.csv
+que puede ser generado desde un archivo de excel y el encabezado de las columnas deben 
+tener precisamente estos nombres:
+
+PROF	LLD	LLS	FR	DT	NPHI	RHOB	GR
+
+las columnas pueden no estar en ese orden pero si deben de existir
+el archivo csv debe de estar en la misma carpeta junto con el programa litodensidad.py
+una vez que se ejecuta el programa se genera un archivo eval_petro_output.csv 
+que contiene calculadas las variables:
+
+PROF	LLD	LLS	FR	DT	NPHI	RHOB	GR	M	N	L	
+Porosidad	VDOL	VCAL	VSIL	VARC	FIP	FIS	FIT	Suma	VDOLR	
+VCALR	VSILR	VARCR	FIPR	FISR	FITR	SumaR	m2	FIF	FIENT	FIEFE	
+FIEFE_FIF	FIZ	mARCHIE	FRcARCHIE	Err_mARCHIE(%)	mSHELL	FRcSHELL	
+Err_mSHELL(%)	mBORAI	FRcBORAI	Err_mBORAI(%)	mPICKETT	FRcPICKETT	
+Err_mPICKETT(%)	mRAIGA	FRcRAIGA	Err_mRAIGA(%)	TFrFIT	TFIF_m	TFIF_FIENT	
+CoParPIRSON	CoParCLASE	FImatTAREK	FIfracTAREK	CoParTAREK	Err_CoParLITO	
+InvTORTUOSIDAD	CONECTIVIDAD	IIF	w	C	FIELE	Ik	CteKC	RGP35	TGP	
+SP	GS	ICY	IZF	IRE	IZE	m_Evans	FRcEvans	Err_m_Evans(%)	Por*	
+m_Pivote	FRcPivote	Err_m_Pivote(%)	LLD/LLS	FiFracCPR	FImatCPR	P	
+P_1medio	Pc	Dm	FIF_FIELE	FIEFE_FITR	SwArchie_modif	S_HCS	FIT_Sw	
+SwIRE	TamBLO	Pc_	log_a	mOGR
+
+
+y a su vez muestra los diagramas y graficos correspondientes (al rededor de 35).
+el archivo generado pude ser abierto con el programa excel listo para dar formato.
+no importa el numero de datos de entrada(numero de filas 400, 25, 10000, etc..) que el archivo
+contenga, el programa hace todos los calculos sin importar cuantos sean.
+asi mismo se encuentran algunos subprogramas que se pueden utilizar de manera independiente para
+no correr todo el flujo de trabajo.
+
 
 hecho por: RESENDIZ AVILES JOSE ANGEL.
