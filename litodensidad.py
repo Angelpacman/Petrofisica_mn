@@ -20,33 +20,32 @@ datos['L'] = np.around(L, decimals = 4)
 
 #Delimitacion de figura con valores mas precisos de minerales
 
-DOLOMIA = np.array([43.5, 0.02, 2.87])
-CALIZA  = np.array([47.6, 0.00, 2.71])
-SILICE  = np.array([55.5,-0.035, 2.65])
-ARCILLA = np.array([120,  0.33,  2.35])
+DOLOMIA = np.array([43.5,   0.02,   2.87])
+CALIZA  = np.array([47.6,   0.00,   2.71])
+SILICE  = np.array([55.5,  -0.035,  2.65])
+ARCILLA = np.array([120,    0.33,   2.35])
 
 def param_lito(mineral):
     M = 0.01 * (189-mineral[0])/(mineral[2] - 1)
     N = (1 - mineral[1]) / (mineral[2] - 1)
     L = 0.01 * (189 - mineral[0])/(1 - mineral[1])
-    return    np.array([M,N,L])
+    return    np.array([N,M,L])
 
-param_lito(DOLOMIA)
-param_lito(CALIZA)
-param_lito(SILICE)
-param_lito(ARCILLA)
 
-ax = param_lito(DOLOMIA)[1]
-ay = param_lito(DOLOMIA)[0]
+ax = param_lito(DOLOMIA)[0]
+ay = param_lito(DOLOMIA)[1]
 az = param_lito(DOLOMIA)[2]
-bx = param_lito(CALIZA)[1]
-by = param_lito(CALIZA)[0]
+
+bx = param_lito(CALIZA)[0]
+by = param_lito(CALIZA)[1]
 bz = param_lito(CALIZA)[2]
-cx = param_lito(SILICE)[1]
-cy = param_lito(SILICE)[0]
+
+cx = param_lito(SILICE)[0]
+cy = param_lito(SILICE)[1]
 cz = param_lito(SILICE)[2]
-dx = param_lito(ARCILLA)[1]
-dy = param_lito(ARCILLA)[0]
+
+dx = param_lito(ARCILLA)[0]
+dy = param_lito(ARCILLA)[1]
 dz = param_lito(ARCILLA)[2]
 
 P_inicial=[ax,bx,cx,dx,ax]
@@ -59,7 +58,7 @@ v_x2=[bx,bx]
 v_y2=[by,1.2]
 v_x3=[cx,cx]
 v_y3=[cy,1.2]
-"""
+
 #figura
 plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
@@ -73,7 +72,7 @@ plt.xlabel('N')
 plt.ylabel('M')
 plt.title('M vs N')
 plt.show()
-"""
+
 
 #librerias para trabajar con el poligono
 from shapely.geometry import Point
@@ -164,98 +163,98 @@ FIS  = np.array([])
 i = 0
 for area in Porosidad:
     if area == r1:
-        A = np.array([ [189, 43.5, 47.5,   55.5],
-                        [1.0, 0.02, 0.0, -0.035],
-                        [1.0, 2.87, 2.71,   2.65],
-                        [1.0, 1.0,  1.0,    1.0]    ])
+        A = np.array([  [  189,  43.50,  47.50, 55.5  ],
+                        [  1.0,   0.02,   0.00, -0.035],
+                        [  1.0,   2.87,   2.71,  2.65 ],
+                        [  1.0,   1.0 ,   1.0 ,  1.0  ]    ])
         A.shape
         #define matrix B
-        b = np.array([ DT[i],
+        b = np.array([  DT[i],
                         NPHI[i],
                         RHOB[i],
-                        1 ])
+                        1       ])
         X    = np.linalg.solve(A, b)
-        FIP  = np.append(FIP, [X[0]], axis=0)
-        VDOL = np.append(VDOL,[X[1]], axis=0)
-        VSIL = np.append(VSIL,[X[3]], axis=0)
-        VARC = np.append(VARC,[0],    axis=0)
-        VCAL = np.append(VCAL,[X[2]], axis=0)
-        FIS  = np.append(FIS, [0],    axis=0)
+        FIP  = np.append(FIP,   [X[0]], axis=0)
+        VDOL = np.append(VDOL,  [X[1]], axis=0)
+        VSIL = np.append(VSIL,  [X[3]], axis=0)
+        VARC = np.append(VARC,  [0],    axis=0)
+        VCAL = np.append(VCAL,  [X[2]], axis=0)
+        FIS  = np.append(FIS,   [0],    axis=0)
 
 
 
     else:
         if area == r2:
-            A = np.array([ [189, 43.5, 55.5,   120],
-                            [1.0, 0.02, -0.035, 0.33],
-                            [1.0, 2.87, 2.65,   2.35],
-                            [1.0, 1.0,  1.0,    1.0]    ])
+            A = np.array([  [  189, 43.50,  55.5,   120   ],
+                            [  1.0,  0.02,  -0.035, 0.33  ],
+                            [  1.0,  2.87,   2.65,  2.35  ],
+                            [  1.0,  1.0,    1.0,   1.0   ]   ])
             A.shape
             #define matrix B
-            b = np.array([ DT[i],
+            b = np.array([  DT[i],
                             NPHI[i],
                             RHOB[i],
-                            1 ])
+                            1       ])
             X    = np.linalg.solve(A, b)
-            FIP  = np.append(FIP, [X[0]], axis=0)
-            VDOL = np.append(VDOL,[X[1]], axis=0)
-            VSIL = np.append(VSIL,[X[2]], axis=0)
-            VARC = np.append(VARC,[X[3]], axis=0)
-            VCAL = np.append(VCAL,[0],    axis=0)
-            FIS  = np.append(FIS, [0],    axis=0)
+            FIP  = np.append(FIP,   [X[0]], axis=0)
+            VDOL = np.append(VDOL,  [X[1]], axis=0)
+            VSIL = np.append(VSIL,  [X[2]], axis=0)
+            VARC = np.append(VARC,  [X[3]], axis=0)
+            VCAL = np.append(VCAL,  [0],    axis=0)
+            FIS  = np.append(FIS,   [0],    axis=0)
 
 
 
         else:
             if area == r3:
-                A = np.matrix([ [189, 45.55, 43.5, 47.6],
-                                [1.0, 1.0, 0.02,    0.0],
-                                [1.0, 1.0, 2.87,   2.71],
-                                [1.0, 1.0,  1.0,    1.0]    ])
+                A = np.matrix([ [189,   45.55,  43.5,   47.6    ],
+                                [1.0,    1.0,    0.02,   0.0    ],
+                                [1.0,    1.0,    2.87,   2.71   ],
+                                [1.0,    1.0,    1.0,    1.0    ]  ])
                 A.shape
                 #define matrix B
-                b = np.array([ DT[i],
+                b = np.array([  DT[i],
                                 NPHI[i],
                                 RHOB[i],
-                                1 ])
+                                1       ])
                 X    = np.linalg.solve(A, b)
-                FIP  = np.append(FIP, [X[0]], axis=0)
-                VDOL = np.append(VDOL,[X[2]], axis=0)
-                VSIL = np.append(VSIL,[0],    axis=0)
-                VARC = np.append(VARC,[0],    axis=0)
-                VCAL = np.append(VCAL,[X[3]], axis=0)
-                FIS  = np.append(FIS, [X[1]], axis=0)
+                FIP  = np.append(FIP,   [X[0]], axis=0)
+                VDOL = np.append(VDOL,  [X[2]], axis=0)
+                VSIL = np.append(VSIL,  [0],    axis=0)
+                VARC = np.append(VARC,  [0],    axis=0)
+                VCAL = np.append(VCAL,  [X[3]], axis=0)
+                FIS  = np.append(FIS,   [X[1]], axis=0)
 
 
 
             else:
                 if area == r4:
-                    A = np.array([  [189, 51.55, 47.6, 55.5],
-                                    [1.0, 1.0,  0.0, -0.035],
-                                    [1.0, 1.0, 2.71,   2.65],
-                                    [1.0, 1.0,  1.0,    1.0]    ])
+                    A = np.array([  [189,  51.55,  47.6,   55.5     ],
+                                    [1.0,   1.0,    0.0,   -0.035   ],
+                                    [1.0,   1.0,    2.71,   2.65    ],
+                                    [1.0,   1.0,    1.0,    1.0     ]  ])
                     A.shape
                     #define matrix B
-                    b = np.array([ DT[i],
+                    b = np.array([  DT[i],
                                     NPHI[i],
                                     RHOB[i],
-                                    1 ])
+                                    1       ])
                     X    = np.linalg.solve(A, b)
-                    FIP  = np.append(FIP, [X[0]], axis=0)
-                    VDOL = np.append(VDOL,[0],    axis=0)
-                    VSIL = np.append(VSIL,[X[3]], axis=0)
-                    VARC = np.append(VARC,[0],    axis=0)
-                    VCAL = np.append(VCAL,[X[2]], axis=0)
-                    FIS  = np.append(FIS, [X[1]], axis=0)
+                    FIP  = np.append(FIP,   [X[0]], axis=0)
+                    VDOL = np.append(VDOL,  [0],    axis=0)
+                    VSIL = np.append(VSIL,  [X[3]], axis=0)
+                    VARC = np.append(VARC,  [0],    axis=0)
+                    VCAL = np.append(VCAL,  [X[2]], axis=0)
+                    FIS  = np.append(FIS,   [X[1]], axis=0)
 
 
                 else:
-                    FIP  = np.append(FIP, [np.NaN], axis=0)
-                    VDOL = np.append(VDOL,[np.NaN], axis=0)
-                    VSIL = np.append(VSIL,[np.NaN], axis=0)
-                    VARC = np.append(VARC,[np.NaN], axis=0)
-                    VCAL = np.append(VCAL,[np.NaN], axis=0)
-                    FIS  = np.append(FIS, [np.NaN], axis=0)
+                    FIP  = np.append(FIP,   [np.NaN], axis=0)
+                    VDOL = np.append(VDOL,  [np.NaN], axis=0)
+                    VSIL = np.append(VSIL,  [np.NaN], axis=0)
+                    VARC = np.append(VARC,  [np.NaN], axis=0)
+                    VCAL = np.append(VCAL,  [np.NaN], axis=0)
+                    FIS  = np.append(FIS,   [np.NaN], axis=0)
     i += 1
 
 FIS.shape
@@ -317,8 +316,8 @@ FIENT = FITR - FIF
 # datos['FIF(%)']  = np.around(FIF*100, decimals = 4)
 # datos['FIENT(%)']  = np.around(FIENT*100, decimals = 4)
 
-datos['m']  = np.around(m, decimals = 4)
-datos['FIF']  = np.around(FIF, decimals = 4)
+datos['m']      = np.around(m, decimals = 4)
+datos['FIF']    = np.around(FIF, decimals = 4)
 datos['FIENT']  = np.around(FIENT, decimals = 4)
 
 #datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
@@ -608,7 +607,7 @@ datos['IZE']    = np.around(IZE,    decimals = 4)
 datos['m_Evans']= np.around(m_Evans,decimals = 4)
 
 
-datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
+#datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
 
 datos.info()
 
@@ -777,3 +776,74 @@ plt.xlabel('Relacion LLD / LLS')
 plt.ylabel('Profundidad')
 plt.xlim(-1.5,3.5)
 plt.show()
+
+#FImatRasmus= 100.0 - (np.sqrt(4.0*((100.0)*(1-0.02))))/(2*(100.0*(1-0.02)))
+#FImatRasmus
+
+
+FRcEvans = 1 * FITR **(-1*m_Evans)
+Err_m_Evans = abs((m - abs(m_Evans))/m) * 100
+datos['FRcEvans']  = np.around(FRcEvans, decimals = 4)
+datos['Err_m_Evans(%)']= np.around(Err_m_Evans, decimals = 4)
+
+
+_Por_ = FITR / ((1-FITR)**2)   #78
+m_Pivote = 2.0 + 12.5*(1 - (FIPR/FITR))*(FITR - 0.07)
+FRcPivote = 1 * FITR **(-1*m_Pivote)
+Err_m_Pivote = abs((m - abs(m_Pivote))/m) * 100
+
+datos['Por*']           = np.around(_Por_,      decimals = 4)
+datos['m_Pivote']       = np.around(m_Pivote,   decimals = 4)
+datos['FRcPivote']      = np.around(FRcPivote,  decimals = 4)
+datos['Err_m_Pivote(%)']= np.around(Err_m_Pivote, decimals = 4)
+
+
+Laterlog = LLD/LLS
+
+FiFracCPR = 1- ((FR - 1)/FR)**(1/CONECTIVIDAD)
+FImatCPR = FITR - FiFracCPR
+P = LLD*FITR**mPICKETT
+P_1medio = (LLD * FITR**mPICKETT)**0.5
+Pc = 255.86*(Ik/FITR)
+
+
+datos['LLD/LLS']    = np.around(Laterlog,   decimals = 4)
+datos['FiFracCPR']  = np.around(FiFracCPR,  decimals = 4)
+datos['FImatCPR']   = np.around(FImatCPR,   decimals = 4)
+datos['P']          = np.around(P,          decimals = 4)
+datos['P_1medio']   = np.around(P_1medio,   decimals = 4)
+datos['Pc']         = np.around(Pc,         decimals = 4)
+
+
+Dm = 6*(1-FITR)/SP
+FIF_FIELE = FIF / FIELE
+FIEFE_FITR = FIEFE / FITR
+G = 0.887
+n = 1.87
+SwArchie_modif = (G*0.20234/FITR)**(-1/n)
+S_HCS = 1-SwArchie_modif
+FIT_Sw = FIT * SwArchie_modif
+C_ = np.mean(FIT_Sw)
+SwIRE = C_ / FITR
+TamBLO = (1-FIF)**(1/3)
+Pc_ = 151.35*(Ik/(FITR*100))**-0.407
+A_ = 2.03
+B_ = 0.9
+log_a = (A_*np.log10(FITR) + np.log10(FR)) / (1+B_*np.log10(FITR))
+mOGR = 1.13*log_a
+
+
+datos['Dm']             = np.around(Dm,         decimals = 4)
+datos['FIF_FIELE']      = np.around(FIF_FIELE,  decimals = 4)
+datos['FIEFE_FITR']     = np.around(FIEFE_FITR, decimals = 4)
+datos['SwArchie_modif'] = np.around(SwArchie_modif,decimals = 4)
+datos['S_HCS']          = np.around(S_HCS,      decimals = 4)
+datos['FIT_Sw']         = np.around(FIT_Sw,     decimals = 4)
+datos['SwIRE']          = np.around(SwIRE,      decimals = 4)
+datos['TamBLO']         = np.around(TamBLO,     decimals = 4)
+datos['Pc_']            = np.around(Pc_,        decimals = 4)
+datos['log_a']          = np.around(log_a,      decimals = 4)
+datos['mOGR']           = np.around(mOGR,       decimals = 4)
+
+
+datos.to_csv('eval_petro_output.csv') #exportando al archivo csv
