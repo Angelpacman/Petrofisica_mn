@@ -100,8 +100,8 @@ main_ax.plot(N, M, marker='o', linestyle='', markersize=4, alpha=0.3, color ='or
 #main_ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 
 # main_ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
-main_ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
-main_ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+main_ax.plot(triang_dol_sil_arc_B, triang_dol_sil_arc_A)
+main_ax.plot(triang_dol_cal_sil_B, triang_dol_cal_sil_A)
 #main_ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3) las lineas salen hacia arriba, :(
 main_ax.grid()
 

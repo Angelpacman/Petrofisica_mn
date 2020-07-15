@@ -69,16 +69,16 @@ triang_dol_sil_arc_B = [a_y,    c_y,    d_y,    a_y]
 triang_dol_sil_arc_C = [a_z,    c_z,    d_z,    a_z]
 
 #figura
-# ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
-ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
-ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
-ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+# plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+plt.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+plt.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+plt.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
 #plt.scatter(datos['N'],datos['M'])
 #plt.xlim([0.5,0.65])
 #plt.ylim([0.7,0.95])
 plt.xlim([0.3,1])
-plt.ylim([0.4,1.2])
+plt.ylim([0.4,1])
 plt.grid()
 plt.xlabel('N')
 plt.ylabel('M')
