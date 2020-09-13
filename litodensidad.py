@@ -32,41 +32,53 @@ def param_lito(mineral):
     return    np.array([N,M,L])
 
 
-ax = param_lito(DOLOMIA)[0]
-ay = param_lito(DOLOMIA)[1]
-az = param_lito(DOLOMIA)[2]
+a_x = param_lito(DOLOMIA)[0]
+a_y = param_lito(DOLOMIA)[1]
+a_z = param_lito(DOLOMIA)[2]
 
-bx = param_lito(CALIZA)[0]
-by = param_lito(CALIZA)[1]
-bz = param_lito(CALIZA)[2]
+b_x = param_lito(CALIZA)[0]
+b_y = param_lito(CALIZA)[1]
+b_z = param_lito(CALIZA)[2]
 
-cx = param_lito(SILICE)[0]
-cy = param_lito(SILICE)[1]
-cz = param_lito(SILICE)[2]
+c_x = param_lito(SILICE)[0]
+c_y = param_lito(SILICE)[1]
+c_z = param_lito(SILICE)[2]
 
-dx = param_lito(ARCILLA)[0]
-dy = param_lito(ARCILLA)[1]
-dz = param_lito(ARCILLA)[2]
+d_x = param_lito(ARCILLA)[0]
+d_y = param_lito(ARCILLA)[1]
+d_z = param_lito(ARCILLA)[2]
 
-P_inicial=[ax,bx,cx,dx,ax]
-P_final  =[ay,by,cy,dy,ay]
-P_M1=[ax,cx]
-P_M2=[ay,cy]
-v_x1=[ax,ax]
-v_y1=[ay,1.2]
-v_x2=[bx,bx]
-v_y2=[by,1.2]
-v_x3=[cx,cx]
-v_y3=[cy,1.2]
+P_inicial=[a_x, b_x,    c_x,    d_x,    a_x]
+P_final  =[a_y, b_y,    c_y,    d_y,    a_y]
+P_M1=[a_x,c_x]
+P_M2=[a_y,c_y]
+v_x1=[a_x,a_x]
+v_y1=[a_y,1]
+v_x2=[b_x,b_x]
+v_y2=[b_y,1]
+v_x3=[c_x,c_x]
+v_y3=[c_y,1]
+
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+
+
+triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
+triang_dol_sil_arc_B = [a_y,    c_y,    d_y,    a_y]
+triang_dol_sil_arc_C = [a_z,    c_z,    d_z,    a_z]
 
 #figura
-plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+# plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+plt.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+plt.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+plt.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
 #plt.scatter(datos['N'],datos['M'])
 #plt.xlim([0.5,0.65])
 #plt.ylim([0.7,0.95])
 plt.xlim([0.3,1])
-plt.ylim([0.4,1.2])
+plt.ylim([0.4,1])
 plt.grid()
 plt.xlabel('N')
 plt.ylabel('M')
@@ -79,10 +91,10 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 #vertices del poligono
-r1 = DOL_CAL_SIL_FIP = Polygon([(ax, ay), (bx , by), (cx , cy), (ax, ay)])
-r2 = DOL_SIL_ARC_FIP = Polygon([(ax, ay), (cx , cy), (dx , dy), (ax, ay)])
-r3 = DOL_CAL_FIP_FIS = Polygon([(ax, ay), (bx , by), (bx , 1.2), (ax, 1.2), (ax ,ay)])
-r4 = CAL_SIL_FIP_FIS = Polygon([(bx, by), (cx , cy), (cx , 1.2), (bx ,1.2), (bx, by)])
+r1 = DOL_CAL_SIL_FIP = Polygon([(a_x, a_y), (b_x , b_y), (c_x , c_y), (a_x, a_y)])
+r2 = DOL_SIL_ARC_FIP = Polygon([(a_x, a_y), (c_x , c_y), (d_x , d_y), (a_x, a_y)])
+r3 = DOL_CAL_FIP_FIS = Polygon([(a_x, a_y), (b_x , b_y), (b_x , 1.2), (a_x, 1.2), (a_x ,a_y)])
+r4 = CAL_SIL_FIP_FIS = Polygon([(b_x, b_y), (c_x , c_y), (c_x , 1.2), (b_x ,1.2), (b_x, b_y)])
 
 
 """definicion de los datos, conversion de datos de serie a numericos tipo array"""
