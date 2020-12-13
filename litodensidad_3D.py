@@ -60,9 +60,9 @@ v_y2=[b_y,1]
 v_x3=[c_x,c_x]
 v_y3=[c_y,1]
 
-tirang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
-tirang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
-tirang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
 
 
 triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
@@ -79,11 +79,14 @@ col = np.linspace(-1*PROF[0],-1*PROF[-1],400)
 #aqui va figura en 2D
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+# ax.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+ax.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+ax.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+ax.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 ax.grid()
 ax.set_xlabel('N')
 ax.set_ylabel('M')
-ax.scatter(N, M, s=10, c = col, marker='o')
+#ax.scatter(N, M, s=10, c = col, marker='o')
 p2d = ax.scatter(N, M, s=10, c = col, marker='o')
 c_bar = plt.colorbar(p2d)
 c_bar.set_label('metros')
@@ -126,7 +129,7 @@ plt.gca().add_collection3d(srf1)
 plt.gca().add_collection3d(srf2)
 #Proyeccion de lineas de la superficie dol cal sil arc
 az.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=min(L), zdir='z', label='dol-sil-arc')
-az.plot(tirang_dol_cal_sil_A,tirang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
+az.plot(triang_dol_cal_sil_A,triang_dol_cal_sil_B, zs=min(L), zdir='z', label='dol-cal-sil')
 #az.plot(tirang_dol_cal_sil_B,tirang_dol_cal_sil_C, zs=min(N), zdir='x',)
 az.legend()
 az.set_zlim(min(L), max(L))

@@ -59,9 +59,9 @@ v_y2=[b_y,1]
 v_x3=[c_x,c_x]
 v_y3=[c_y,1]
 
-tirang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
-tirang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
-tirang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
 
 
 triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
@@ -69,13 +69,16 @@ triang_dol_sil_arc_B = [a_y,    c_y,    d_y,    a_y]
 triang_dol_sil_arc_C = [a_z,    c_z,    d_z,    a_z]
 
 #figura
-plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+# plt.plot(P_inicial,P_final,P_M1,P_M2,v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
+plt.plot(triang_dol_sil_arc_A, triang_dol_sil_arc_B)
+plt.plot(triang_dol_cal_sil_A, triang_dol_cal_sil_B)
+plt.plot(v_x1,v_y1,v_x2,v_y2,v_x3,v_y3)
 plt.plot(datos['N'],datos['M'],marker='o', markersize=2, linestyle='', color='r', label = "M vs N")
 #plt.scatter(datos['N'],datos['M'])
 #plt.xlim([0.5,0.65])
 #plt.ylim([0.7,0.95])
 plt.xlim([0.3,1])
-plt.ylim([0.4,1.2])
+plt.ylim([0.4,1])
 plt.grid()
 plt.xlabel('N')
 plt.ylabel('M')

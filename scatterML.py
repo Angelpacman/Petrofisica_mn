@@ -62,9 +62,9 @@ v_y2=[b_y,1]
 v_x3=[c_x,c_x]
 v_y3=[c_y,1]
 
-tirang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
-tirang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
-tirang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
+triang_dol_cal_sil_A = [a_x,    b_x,    c_x,    a_x]
+triang_dol_cal_sil_B = [a_y,    b_y,    c_y,    a_y]
+triang_dol_cal_sil_C = [a_z,    b_z,    c_z,    a_z]
 
 
 triang_dol_sil_arc_A = [a_x,    c_x,    d_x,    a_x]
