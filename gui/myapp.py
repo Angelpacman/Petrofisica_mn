@@ -100,7 +100,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
         PROF= np.array(self.datos['PROF'])  #*-1
-        col = np.linspace(-1*PROF[0],-1*PROF[-1],400)
+        col = np.linspace(-1*PROF[0],-1*PROF[-1],len(PROF))
 
         #aqui va figura en 2D
         fig = plt.figure()
