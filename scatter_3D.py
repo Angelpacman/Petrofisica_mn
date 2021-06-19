@@ -84,7 +84,7 @@ fig = plt.figure(figsize=(10,12))
 col = np.linspace(-1*PROF[0],-1*PROF[-1],400)
 
 ax3D = fig.add_subplot(111, projection='3d')
-p3d=ax3D.scatter(N, M, -1*PROF, s=100, c=col, marker='.')
+p3d=ax3D.scatter(N, M, -1*PROF, s=80, c=col, marker='.', cmap='gnuplot2')
 
 #Proyeccion de lineas de la superficie dol cal sil arc
 ax3D.plot(triang_dol_sil_arc_A,triang_dol_sil_arc_B, zs=-1*max(PROF), zdir='z', label='dol-sil-arc')
