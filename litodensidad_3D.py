@@ -7,7 +7,7 @@ from matplotlib.colors import LinearSegmentedColormap
 
 
 #captura de los datos
-datos = pd.read_csv("eval_petro.csv")
+datos = pd.read_csv("eval_petro(0).csv")
 # datos = pd.read_csv("gabs.csv")
 #datos['DT'] = 189 - (datos['RHOB'] -1)*datos['M']/0.01
 #datos['N'] = (1 - datos['NPHI'])/(datos['RHOB'] - 1)
