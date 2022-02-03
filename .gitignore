@@ -1,6 +1,6 @@
 *.csv
 *.xlsx
 *.ipynb
-/screenshots
-/tesis
+screenshots/
+tesis/
 colormap.py
