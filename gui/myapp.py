@@ -217,7 +217,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         ax.scatter(N, M, s=10, c = col, marker='o')
         p2d = ax.scatter(N, M, s=10, c = col, marker='o')
         color_b = plt.colorbar(p2d)
-        color_b.set_label('Profundidad')
+        color_b.set_label('Profundidad (metros)')
         ax.set_title('Diagrama M vs N')
         plt.show()
 
@@ -229,24 +229,24 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         P__L =  [a_z,    c_z,     d_z,     a_z]
         fig = plt.figure()
         ay = fig.add_subplot(111)
-        #ay.title("Grafico M vs L")
         ay.plot(P__M,P__L)
         ay.plot(P_M,P_L)
         ay.grid()
         ay.set_xlabel('M')
         ay.set_ylabel('L')
         ay.scatter(M, L, s=10, c = col, marker='o')
-        #p2d = ax.scatter(M, L, s=10, c = col, marker='o')
-        color_b = plt.colorbar(p2d)
-        color_b.set_label('Profundidad')
+        p2d_ML = ay.scatter(M, L, s=10, c = col, marker='o')
+        color_b = plt.colorbar(p2d_ML)
+        color_b.set_label('Profundidad (metros)')
         ay.set_title('Diagrama M vs L')
+        plt.show()
 
         ##NL
         P_N  = [0.5241,0.5848, 0.6273, 0.5241]
         P_L  = [1.4847, 1.414, 1.2898, 1.4847]
         P__N = [a_x,    c_x,     d_x,     a_x]
         P__L = [a_z,    c_z,     d_z,     a_z]
-        coli = np.linspace(1,99,400)
+        #coli = np.linspace(1,99,400)
         fig = plt.figure()
         az = fig.add_subplot(111)
         #az.title("Grafico N vs L")
@@ -256,9 +256,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         az.set_xlabel('N')
         az.set_ylabel('L')
         az.scatter(N, L, s=10, c = col, marker='o')
-        #p2d = az.scatter(M, L, s=10, c = coli, marker='o')
-        color_b = plt.colorbar(p2d)
-        color_b.set_label('Profundidad')
+        p2d_NL = az.scatter(N, L, s=10, c = col, marker='o')
+        color_b = plt.colorbar(p2d_NL)
+        color_b.set_label('Profundidad (metros)')
         az.set_title('Diagrama N vs L')
         plt.show()
 
